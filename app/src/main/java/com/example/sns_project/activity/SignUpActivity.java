@@ -2,8 +2,11 @@ package com.example.sns_project.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -16,8 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.sns_project.Util.showToast;
 
-public class SignUpActivity extends BasicActivity {
+public class SignUpActivity extends BasicActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
+    private Button signUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,39 +31,30 @@ public class SignUpActivity extends BasicActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        findViewById(R.id.signUpButton).setOnClickListener(onClickListener);
-        findViewById(R.id.gotoLoginButton).setOnClickListener(onClickListener);
+        signUp = findViewById(R.id.signUpButton);
+        signUp.setOnClickListener(this);
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        moveTaskToBack(true);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.signUpButton:
+                signUp();
+                break;
+        }
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.signUpButton:
-                    signUp();
-                    break;
-                case R.id.gotoLoginButton:
-                    myStartActivity(LoginActivity.class);
-                    break;
-            }
-        }
-    };
-
     private void signUp() {
-        String email = ((EditText)findViewById(R.id.emailEditText)).getText().toString();
-        String password = ((EditText)findViewById(R.id.passwordEditText)).getText().toString();
-        String passwordCheck = ((EditText)findViewById(R.id.passwordCheckEditText)).getText().toString();
+        EditText edtEmail = findViewById(R.id.emailEditText);
+        EditText edtPassword = findViewById(R.id.passwordEditText);
+        EditText edtPasswordCheck = findViewById(R.id.passwordCheckEditText);
 
-        if(email.length() > 0 && password.length() > 0 && passwordCheck.length() > 0){
-            if(password.equals(passwordCheck)){
+        String email = edtEmail.getText().toString();
+        String password = edtPassword.getText().toString();
+        String passwordCheck = edtPasswordCheck.getText().toString();
+
+        if (email.length() > 0 && password.length() > 0 && passwordCheck.length() > 0) {
+            if (password.equals(passwordCheck)) {
                 final RelativeLayout loaderLayout = findViewById(R.id.loaderLyaout);
                 loaderLayout.setVisibility(View.VISIBLE);
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -72,16 +67,16 @@ public class SignUpActivity extends BasicActivity {
                                     showToast(SignUpActivity.this, "회원가입에 성공하였습니다.");
                                     myStartActivity(MainActivity.class);
                                 } else {
-                                    if(task.getException() != null){
+                                    if (task.getException() != null) {
                                         showToast(SignUpActivity.this, task.getException().toString());
                                     }
                                 }
                             }
                         });
-            }else{
+            } else {
                 showToast(SignUpActivity.this, "비밀번호가 일치하지 않습니다.");
             }
-        }else {
+        } else {
             showToast(SignUpActivity.this, "이메일 또는 비밀번호를 입력해 주세요.");
         }
     }

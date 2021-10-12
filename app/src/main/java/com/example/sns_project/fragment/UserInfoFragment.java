@@ -21,7 +21,7 @@ import com.example.sns_project.R;
 import com.example.sns_project.UserInfo;
 import com.example.sns_project.activity.MemberInitActivity;
 import com.example.sns_project.activity.WritePostActivity;
-import com.example.sns_project.adapter.UserListAdapter;
+//import com.example.sns_project.adapter.UserListAdapter;
 import com.example.sns_project.listener.OnPostListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

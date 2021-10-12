@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.sns_project.R;
 import com.example.sns_project.fragment.HomeFragment;
 import com.example.sns_project.fragment.UserInfoFragment;
-import com.example.sns_project.fragment.UserListFragment;
+//import com.example.sns_project.fragment.UserListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,7 +53,7 @@ public class MainActivity extends BasicActivity {
     private void init(){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) {
-            myStartActivity(SignUpActivity.class);
+            myStartActivity(LoginActivity.class);
         } else {
             DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(firebaseUser.getUid());
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -97,12 +97,12 @@ public class MainActivity extends BasicActivity {
                                     .replace(R.id.container, userInfoFragment)
                                     .commit();
                             return true;
-                        case R.id.userList:
-                            UserListFragment userListFragment = new UserListFragment();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.container, userListFragment)
-                                    .commit();
-                            return true;
+//                        case R.id.userList:
+//                            UserListFragment userListFragment = new UserListFragment();
+//                            getSupportFragmentManager().beginTransaction()
+//                                    .replace(R.id.container, userListFragment)
+//                                    .commit();
+//                            return true;
                     }
                     return false;
                 }

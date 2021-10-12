@@ -2,8 +2,11 @@ package com.example.sns_project.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
@@ -16,8 +19,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.sns_project.Util.showToast;
 
-public class LoginActivity extends BasicActivity {
+public class LoginActivity extends BasicActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
+
+    private Button btnLogin, btnResetPassword, btnGoToRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,23 +32,29 @@ public class LoginActivity extends BasicActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        findViewById(R.id.loginButton).setOnClickListener(onClickListener);
-        findViewById(R.id.gotoPasswordResetButton).setOnClickListener(onClickListener);
+        btnLogin = findViewById(R.id.loginButton);
+        btnResetPassword = findViewById(R.id.gotoPasswordResetButton);
+        btnGoToRegister = findViewById(R.id.gotoRegister);
+
+        btnLogin.setOnClickListener(this);
+        btnResetPassword.setOnClickListener(this);
+        btnGoToRegister.setOnClickListener(this);
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.loginButton:
-                    login();
-                    break;
-                case R.id.gotoPasswordResetButton:
-                    myStartActivity(PasswordResetActivity.class);
-                    break;
-            }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.loginButton:
+                login();
+                break;
+            case R.id.gotoPasswordResetButton:
+                myStartActivity(PasswordResetActivity.class);
+                break;
+            case R.id.gotoRegister:
+                myStartActivity(SignUpActivity.class);
+                break;
         }
-    };
+    }
 
     private void login() {
         String email = ((EditText) findViewById(R.id.emailEditText)).getText().toString();
@@ -77,5 +88,13 @@ public class LoginActivity extends BasicActivity {
         Intent intent = new Intent(this, c);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
     }
 }

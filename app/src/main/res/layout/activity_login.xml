@@ -59,6 +59,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="비밀번호 재설정" />
+
+            <Button
+                android:id="@+id/gotoRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="회원가입" />
+
         </LinearLayout>
 
     </LinearLayout>
