@@ -8,11 +8,14 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity">
@@ -50,6 +53,9 @@
         </activity>
         <activity android:name=".activity.PostActivity">
         </activity>
+        <activity android:name=".activity.FoodMap">
+        </activity>
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="a60d55e88a56dd6e1223beb466cb6f4e"/>
     </application>
 
 </manifest>

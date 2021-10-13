@@ -1,10 +1,17 @@
 package com.example.sns_project.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+
 import com.example.sns_project.R;
 import com.example.sns_project.fragment.HomeFragment;
 import com.example.sns_project.fragment.UserInfoFragment;
@@ -21,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import net.daum.mf.map.api.MapView;
+
 public class MainActivity extends BasicActivity {
     private static final String TAG = "MainActivity";
 
@@ -29,6 +38,7 @@ public class MainActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbarTitle(getResources().getString(R.string.app_name));
+
 
         init();
 //        FirebaseUser user;
@@ -119,12 +129,12 @@ public class MainActivity extends BasicActivity {
                                     .replace(R.id.container, userInfoFragment)
                                     .commit();
                             return true;
-//                        case R.id.userList:
-//                            UserListFragment userListFragment = new UserListFragment();
-//                            getSupportFragmentManager().beginTransaction()
-//                                    .replace(R.id.container, userListFragment)
-//                                    .commit();
-//                            return true;
+                        case R.id.userList:
+
+                            Intent intent = new Intent(MainActivity.this, FoodMap.class);
+                            startActivity(intent);
+
+                            return true;
                     }
                     return false;
                 }

@@ -25,7 +25,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 public class FoodMap extends AppCompatActivity {
-    Provider provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +38,9 @@ public class FoodMap extends AppCompatActivity {
 
         final LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        MapView mapView = new MapView(getApplicationContext());
+        MapView mapView = new MapView(this);
 
-        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.mapView2);
         mapViewContainer.addView(mapView);
 
         String url = "kakaomap://search?q=맛집&p="+lm;
@@ -49,10 +48,6 @@ public class FoodMap extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         Log.d("인텐트",intent.toString());
         startActivity(intent);
-
-
-
-
 
     }
 
