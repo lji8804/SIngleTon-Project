@@ -2,16 +2,13 @@ package com.example.sns_project;
 
 import android.app.Activity;
 import androidx.annotation.NonNull;
-
 import com.example.sns_project.listener.OnPostListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.util.ArrayList;
-
 import static com.example.sns_project.Util.isStorageUrl;
 import static com.example.sns_project.Util.showToast;
 import static com.example.sns_project.Util.storageUrlToName;
@@ -67,7 +64,7 @@ public class FirebaseHelper {
                         public void onSuccess(Void aVoid) {
                             showToast(activity, "게시글을 삭제하였습니다.");
                             onPostListener.onDelete(postInfo);
-                            //postsUpdate();
+//                            postsUpdate();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

@@ -14,9 +14,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends BasicActivity {
     private static final String TAG = "MainActivity";
@@ -28,6 +31,25 @@ public class MainActivity extends BasicActivity {
         setToolbarTitle(getResources().getString(R.string.app_name));
 
         init();
+//        FirebaseUser user;
+//        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();;
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        String currentUid = user.getUid();
+//        CollectionReference collectionReference = firebaseFirestore.collection("posts");
+//        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    //컬렉션 아래에 있는 모든 정보를 가져온다.
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        //document.getData() or document.getId() 등등 여러 방법으로
+//                        //데이터를 가져올 수 있다.
+//                        document.get("publisher");
+//                    }
+//                    //그렇지 않을때
+//                }
+//            }
+//        });
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.example.sns_project;
 import android.app.Activity;
 import android.util.Patterns;
 import android.widget.Toast;
-
 import java.net.URLConnection;
 
 public class Util {

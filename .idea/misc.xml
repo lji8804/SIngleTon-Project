@@ -18,9 +18,11 @@
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/activity_user_init.xml" value="0.2234375" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/activity_write_post.xml" value="0.2234375" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/fragment_home.xml" value="0.2234375" />
+        <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/fragment_user_info.xml" value="0.18888888888888888" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/fragment_user_list.xml" value="0.2234375" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/item_gallery.xml" value="0.2234375" />
-        <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/item_post.xml" value="0.2234375" />
+        <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/item_post.xml" value="0.536" />
+        <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/item_user_list.xml" value="0.18888888888888888" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/view_contents_edit_text.xml" value="0.2234375" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/view_contents_image.xml" value="0.2234375" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/view_contents_player.xml" value="0.2234375" />
@@ -28,6 +30,7 @@
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/view_loader.xml" value="0.2234375" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/view_post.xml" value="0.2234375" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/layout/view_toolbar.xml" value="0.2234375" />
+        <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/menu/bottom_navigation.xml" value="0.2234375" />
         <entry key="..\:/Users/study/AndroidStudioProjects/SNS_Project-master/app/src/main/res/menu/post.xml" value="0.2234375" />
       </map>
     </option>
