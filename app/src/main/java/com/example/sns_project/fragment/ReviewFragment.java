@@ -3,27 +3,23 @@ package com.example.sns_project.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
 import com.example.sns_project.activity.WritePostActivity;
-import com.example.sns_project.adapter.HomeAdapter;
-import com.example.sns_project.foodmap.FoodMap;
+import com.example.sns_project.adapter.ReviewAdapter;
 import com.example.sns_project.listener.OnPostListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -33,16 +29,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class HomeFragment extends Fragment {
-    private final String COLLECTION_PATH = "posts";
-    private static final String TAG = "HomeFragment";
+public class ReviewFragment extends Fragment {
+    private static final String TAG = "ReviewFragment";
+    private final String COLLECTION_PATH = "reviews";
     private FirebaseFirestore firebaseFirestore;
-    private HomeAdapter homeAdapter;
+    private ReviewAdapter reviewAdapter;
     private ArrayList<PostInfo> postList;
     private boolean updating;
     private boolean topScrolled;
 
-    public HomeFragment() {
+    public ReviewFragment() {
         // Required empty public constructor
     }
 
@@ -57,19 +53,19 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_review, container, false);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
-        homeAdapter = new HomeAdapter(getActivity(), postList);
-        homeAdapter.setOnPostListener(onPostListener);
+        reviewAdapter = new ReviewAdapter(getActivity(), postList);
+        reviewAdapter.setOnPostListener(onPostListener);
 
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        view.findViewById(R.id.home_floatingActionButton).setOnClickListener(onClickListener);
+        view.findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(homeAdapter);
+        recyclerView.setAdapter(reviewAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -125,7 +121,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
-        homeAdapter.playerStop();
+        reviewAdapter.playerStop();
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -138,7 +134,7 @@ public class HomeFragment extends Fragment {
                     myStartActivity(SignUpActivity.class);
                     break;
                 */
-                case R.id.home_floatingActionButton:
+                case R.id.floatingActionButton:
 //                    Intent intent = new Intent(getActivity(), FoodMap.class);
 //                    startActivity(intent);
                     myStartActivity(WritePostActivity.class);
@@ -151,7 +147,7 @@ public class HomeFragment extends Fragment {
         @Override
         public void onDelete(PostInfo postInfo) {
             postList.remove(postInfo);
-            homeAdapter.notifyDataSetChanged();
+            reviewAdapter.notifyDataSetChanged();
 
             Log.e("로그: ","삭제 성공");
         }
@@ -165,7 +161,7 @@ public class HomeFragment extends Fragment {
     private void postsUpdate(final boolean clear) {
         updating = true;
         Date date = postList.size() == 0 || clear ? new Date() : postList.get(postList.size() - 1).getCreatedAt();
-        CollectionReference collectionReference = firebaseFirestore.collection("posts");
+        CollectionReference collectionReference = firebaseFirestore.collection(COLLECTION_PATH);
         collectionReference.orderBy("createdAt", Query.Direction.DESCENDING).whereLessThan("createdAt", date).limit(10).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -176,7 +172,8 @@ public class HomeFragment extends Fragment {
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                postList.add(new PostInfo(COLLECTION_PATH,
+                                postList.add(new PostInfo(
+                                        COLLECTION_PATH,
                                         document.getData().get("title").toString(),
                                         (ArrayList<String>) document.getData().get("contents"),
                                         (ArrayList<String>) document.getData().get("formats"),
@@ -184,7 +181,7 @@ public class HomeFragment extends Fragment {
                                         new Date(document.getDate("createdAt").getTime()),
                                         document.getId()));
                             }
-                            homeAdapter.notifyDataSetChanged();
+                            reviewAdapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

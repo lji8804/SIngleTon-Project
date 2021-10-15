@@ -21,18 +21,6 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="카테고리 들어갈 자리"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="음식점 이름"
-                android:textSize="18sp"/>
-
             <EditText
                 android:id="@+id/titleEditText"
                 android:layout_width="match_parent"
@@ -95,10 +83,8 @@
         android:id="@+id/buttonsBackgroundLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:background="#91646464">
-        <!--        android:visibility="gone">-->
+<!--        android:visibility="gone">-->
 
 
         <androidx.cardview.widget.CardView

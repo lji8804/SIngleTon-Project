@@ -57,7 +57,7 @@ public class FirebaseHelper {
     private void storeDelete(final String id, final PostInfo postInfo) {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         if (successCount == 0) {
-            firebaseFirestore.collection("posts").document(id)
+            firebaseFirestore.collection(postInfo.getCategory()).document(id)
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
