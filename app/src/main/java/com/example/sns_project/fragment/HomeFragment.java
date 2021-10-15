@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
+import com.example.sns_project.activity.FoodMap;
 import com.example.sns_project.activity.WritePostActivity;
 import com.example.sns_project.adapter.HomeAdapter;
 import com.example.sns_project.listener.OnPostListener;
@@ -137,7 +138,9 @@ public class HomeFragment extends Fragment {
                     break;
                 */
                 case R.id.floatingActionButton:
-                    myStartActivity(WritePostActivity.class);
+                    Intent intent = new Intent(getActivity(), FoodMap.class);
+                    startActivity(intent);
+//                    myStartActivity(FoodMap.class);
                     break;
             }
         }

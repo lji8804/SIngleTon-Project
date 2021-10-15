@@ -19,6 +19,7 @@ import com.example.sns_project.fragment.UserInfoFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -28,38 +29,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import net.daum.mf.map.api.MapView;
-
 public class MainActivity extends BasicActivity {
     private static final String TAG = "MainActivity";
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbarTitle(getResources().getString(R.string.app_name));
-
-
         init();
-//        FirebaseUser user;
-//        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();;
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        String currentUid = user.getUid();
-//        CollectionReference collectionReference = firebaseFirestore.collection("posts");
-//        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    //컬렉션 아래에 있는 모든 정보를 가져온다.
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        //document.getData() or document.getId() 등등 여러 방법으로
-//                        //데이터를 가져올 수 있다.
-//                        document.get("publisher");
-//                    }
-//                    //그렇지 않을때
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -83,7 +62,8 @@ public class MainActivity extends BasicActivity {
     }
 
     private void init(){
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
         if (firebaseUser == null) {
             myStartActivity(LoginActivity.class);
         } else {
@@ -130,10 +110,8 @@ public class MainActivity extends BasicActivity {
                                     .commit();
                             return true;
                         case R.id.userList:
-
                             Intent intent = new Intent(MainActivity.this, FoodMap.class);
                             startActivity(intent);
-
                             return true;
                     }
                     return false;
