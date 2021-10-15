@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
-import com.example.sns_project.activity.FoodMap;
 import com.example.sns_project.activity.WritePostActivity;
 import com.example.sns_project.adapter.HomeAdapter;
+import com.example.sns_project.foodmap.FoodMap;
 import com.example.sns_project.listener.OnPostListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

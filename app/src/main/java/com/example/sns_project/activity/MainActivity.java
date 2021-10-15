@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.example.sns_project.R;
+import com.example.sns_project.foodmap.FoodMap;
 import com.example.sns_project.fragment.HomeFragment;
 import com.example.sns_project.fragment.UserInfoFragment;
 //import com.example.sns_project.fragment.UserListFragment;
@@ -38,7 +39,16 @@ public class MainActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbarTitle(getResources().getString(R.string.app_name));
+
+        ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_FINE_LOCATION},
+                MODE_PRIVATE);
+
         init();
+
+
+
     }
 
     @Override
@@ -110,6 +120,7 @@ public class MainActivity extends BasicActivity {
                                     .commit();
                             return true;
                         case R.id.userList:
+
                             Intent intent = new Intent(MainActivity.this, FoodMap.class);
                             startActivity(intent);
                             return true;
