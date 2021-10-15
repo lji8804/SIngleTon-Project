@@ -59,7 +59,6 @@
         </activity>
         <activity android:name=".activity.PostActivity">
         </activity>
-
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="a60d55e88a56dd6e1223beb466cb6f4e"/>
     </application>
 

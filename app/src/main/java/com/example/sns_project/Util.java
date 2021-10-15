@@ -6,7 +6,7 @@ import android.widget.Toast;
 import java.net.URLConnection;
 
 public class Util {
-    public Util(){/* */}
+    public Util(){}
 
     public static final String INTENT_PATH = "path";
     public static final String INTENT_MEDIA = "media";

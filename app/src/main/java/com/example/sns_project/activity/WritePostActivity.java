@@ -45,6 +45,7 @@ import static com.example.sns_project.Util.storageUrlToName;
 
 public class WritePostActivity extends BasicActivity {
     private static final String TAG = "WritePostActivity";
+    private String collectionPath;
     private FirebaseUser user;
     private StorageReference storageRef;
     private ArrayList<String> pathList = new ArrayList<>();
@@ -92,6 +93,7 @@ public class WritePostActivity extends BasicActivity {
         storageRef = storage.getReference();
 
         postInfo = (PostInfo) getIntent().getSerializableExtra("postInfo");
+        collectionPath = getIntent().getStringExtra("collectionPath");
         postInit();
     }
 
@@ -209,12 +211,16 @@ public class WritePostActivity extends BasicActivity {
             loaderLayout.setVisibility(View.VISIBLE);
             final ArrayList<String> contentsList = new ArrayList<>();
             final ArrayList<String> formatList = new ArrayList<>();
+            // firebase 정보 가져오기
             user = FirebaseAuth.getInstance().getCurrentUser();
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
             FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-            final DocumentReference documentReference = postInfo == null ? firebaseFirestore.collection("posts").document() : firebaseFirestore.collection("posts").document(postInfo.getId());
+
+
+            final DocumentReference documentReference = postInfo == null ? firebaseFirestore.collection(collectionPath).document() : firebaseFirestore.collection(collectionPath).document(postInfo.getId());
             final Date date = postInfo == null ? new Date() : postInfo.getCreatedAt();
+
             for (int i = 0; i < parent.getChildCount(); i++) {
                 LinearLayout linearLayout = (LinearLayout) parent.getChildAt(i);
                 for (int ii = 0; ii < linearLayout.getChildCount(); ii++) {
@@ -256,7 +262,7 @@ public class WritePostActivity extends BasicActivity {
                                             successCount--;
                                             contentsList.set(index, uri.toString());
                                             if (successCount == 0) {
-                                                PostInfo postInfo = new PostInfo(title, contentsList, formatList, user.getUid(), date);
+                                                PostInfo postInfo = new PostInfo(collectionPath, title, contentsList, formatList, user.getUid(), date);
                                                 storeUpload(documentReference, postInfo);
                                             }
                                         }
@@ -271,7 +277,7 @@ public class WritePostActivity extends BasicActivity {
                 }
             }
             if (successCount == 0) {
-                storeUpload(documentReference, new PostInfo(title, contentsList, formatList, user.getUid(), date));
+                storeUpload(documentReference, new PostInfo(collectionPath, title, contentsList, formatList, user.getUid(), date));
             }
         } else {
             showToast(WritePostActivity.this, "제목을 입력해주세요.");

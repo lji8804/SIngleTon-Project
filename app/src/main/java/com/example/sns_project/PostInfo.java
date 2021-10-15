@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PostInfo implements Serializable {
+    private String category;
     private String title;
     private ArrayList<String> contents;
     private ArrayList<String> formats;
@@ -14,7 +15,17 @@ public class PostInfo implements Serializable {
     private Date createdAt;
     private String id;
 
-    public PostInfo(String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
+    public PostInfo(String category, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
+        this.category = category;
+        this.title = title;
+        this.contents = contents;
+        this.formats = formats;
+        this.publisher = publisher;
+        this.createdAt = createdAt;
+    }
+
+    public PostInfo(String category, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
+        this.category = category;
         this.title = title;
         this.contents = contents;
         this.formats = formats;
@@ -23,13 +34,13 @@ public class PostInfo implements Serializable {
         this.id = id;
     }
 
-    public PostInfo(String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
-        this.title = title;
-        this.contents = contents;
-        this.formats = formats;
-        this.publisher = publisher;
-        this.createdAt = createdAt;
-    }
+//    public PostInfo(String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
+//        this.title = title;
+//        this.contents = contents;
+//        this.formats = formats;
+//        this.publisher = publisher;
+//        this.createdAt = createdAt;
+//    }
 
     public Map<String, Object> getPostInfo(){
         Map<String, Object> docData = new HashMap<>();
@@ -41,6 +52,12 @@ public class PostInfo implements Serializable {
         return  docData;
     }
 
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
+    }
     public String getTitle(){
         return this.title;
     }

@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.sns_project.R;
 import com.example.sns_project.fragment.HomeFragment;
+import com.example.sns_project.fragment.ReviewFragment;
 import com.example.sns_project.fragment.UserInfoFragment;
 //import com.example.sns_project.fragment.UserListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -104,9 +105,9 @@ public class MainActivity extends BasicActivity {
                                     .commit();
                             return true;
                         case R.id.myInfo:
-                            UserInfoFragment userInfoFragment = new UserInfoFragment();
+                            ReviewFragment reviewFragment = new ReviewFragment();
                             getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.container, userInfoFragment)
+                                    .replace(R.id.container, reviewFragment)
                                     .commit();
                             return true;
                         case R.id.userList:

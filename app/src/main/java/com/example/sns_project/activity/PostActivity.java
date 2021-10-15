@@ -135,6 +135,7 @@ public class PostActivity extends BasicActivity {
     private void myStartActivity(Class c, PostInfo postInfo) {
         Intent intent = new Intent(this, c);
         intent.putExtra("postInfo", postInfo);
+        intent.putExtra("collectionPath", postInfo.getCategory());
         startActivityForResult(intent, 0);
     }
 }
