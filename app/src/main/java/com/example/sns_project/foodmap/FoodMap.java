@@ -2,16 +2,10 @@ package com.example.sns_project.foodmap;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +26,6 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -50,12 +42,13 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
     private ImageButton ibBtnSearch;
     private EditText edtSearch;
 
+
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
-    ArrayList<Data> dataArrayList = new ArrayList<>();
     private LocationManager lm;
     private MapView mapView;
 
     MutableLiveData<Data> kakao = new MutableLiveData<>();
+    ArrayList<Data> dataArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +77,9 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
             }
         });
 
+
+
+
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 lat = String.valueOf(location.getLatitude());
@@ -104,10 +100,11 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.mapView2);
         mapViewContainer.addView(mapView);
         mapView.setCurrentLocationRadius(2000);
+
         mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(Double.parseDouble(lat), Double.parseDouble(lng)), true);
         mapView.setZoomLevel(4, true);
 
-//        String url = "kakaomap://search?q=맛집&p=" + lm;
+        String url = "kakaomap://search?q=맛집&p=" + lm;
 
 //        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //        Log.d("인텐트",intent.toString());
@@ -118,23 +115,17 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
         Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
         MapPOIItem marker = new MapPOIItem();
 
-        mapView.removeAllPOIItems();
-
         dataArrayList.clear();
-        Log.d("메인", "fooddata size" + foodDataList.size());
-
-            for (int i = 0; i < foodDataList.size(); i++) {
-                marker.setItemName(foodDataList.get(i).getName());
-                double x = Double.parseDouble(foodDataList.get(i).getLatitude());
-                double y = Double.parseDouble(foodDataList.get(i).getLongitude());
-                marker.setTag(i);
-                marker.setMapPoint(MapPoint.mapPointWithGeoCoord( x, y ));
-                marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-//            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-                mapView.addPOIItem(marker);
-            }
-
-
+        for (int i = 0; i < dataArrayList.size(); i++) {
+            marker.setItemName(foodDataList.get(i).getName());
+            double x = Double.parseDouble(foodDataList.get(i).getLongitude());
+            double y = Double.parseDouble(foodDataList.get(i).getLatitude());
+            marker.setTag(i);
+            marker.setMapPoint(MapPoint.mapPointWithGeoCoord( x, y ));
+            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+            mapView.addPOIItem(marker);
+        }
     }
 
     private void getCurrentLocation() {
@@ -149,13 +140,16 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
     }
 
     private void getFoodData() {
+
+        Log.d("액티비티", "생성");
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ApiService.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+
         dataArrayList.clear();
-        foodDataList.clear();
         String address = edtSearch.getText().toString();
         ApiService api = retrofit.create(ApiService.class);
         api.getAddress(ApiService.ApiKey, address, lng, lat, 20000)
@@ -165,7 +159,9 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
                         if (response.body() != null) {
                             for (int i = 0; i < 15; i++) {
                                 kakao.setValue(response.body());
+//                                Log.i("메인", kakao.getValue().getDocuments().get(i).getPlaceName());
                                 dataArrayList.add(response.body());
+                                Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
                                 String[] colum = {
                                         dataArrayList.get(i).getDocuments().get(i).getPlaceName(),
                                         dataArrayList.get(i).getDocuments().get(i).getCategoryName(),
@@ -179,12 +175,10 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
                                         colum[0],colum[1],colum[2],colum[3],colum[4],colum[5],colum[6]
                                 );
                                 foodDataList.add(foodData);
-                                Log.d("메인", " " + foodDataList.size());
                             }
                         } else {
                             Log.i("메인", "리스폰스 널" + response.code());
                         }
-                        placeMaker();
                     }
 
                     @Override
@@ -199,6 +193,8 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
 //               Log.i("메인", data.documentsList.get(0).getAddress_name());
             }
         });
+        placeMaker();
+
     }
 
     @Override
@@ -234,4 +230,5 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
                               @Query("radius") Integer rad);
 
     }
+
 }
