@@ -2,6 +2,10 @@ package com.example.sns_project.foodmap;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -9,8 +13,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -19,11 +25,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.sns_project.KakaoLocal.Data;
+import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
+import com.example.sns_project.activity.WritePostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -44,13 +53,17 @@ public class FoodMap extends AppCompatActivity {
     private double lng;
     private ImageButton ibBtnSearch,ibBtnLocation;
     private EditText edtSearch;
-
+    private View alertDialog;
+    private TextView tvName, tvAddress, tvPhone, tvUrl;
 
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
     private LocationManager lm;
     private MapView mapView;
     private FusedLocationProviderClient fusedLocationClient;
     private boolean isGPS ;
+    private MarkerClickListener markerClickListener = new MarkerClickListener();
+    private CustomBalloonAdapter customBalloonAdapter;
+    private final String COLLECTION_PATH = "posts";
 
     MutableLiveData<Data> kakao = new MutableLiveData<>();
     ArrayList<Data> dataArrayList = new ArrayList<>();
@@ -60,6 +73,7 @@ public class FoodMap extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_view);
 
+        customBalloonAdapter = new CustomBalloonAdapter();
         ibBtnSearch = findViewById(R.id.ibBtnSearch);
         edtSearch = findViewById(R.id.edtSearch);
         ibBtnLocation = findViewById(R.id.ibBtnLocation);
@@ -94,11 +108,6 @@ public class FoodMap extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getFoodData();
-                if(foodDataList.size() != 0){
-                    placeMaker();
-                    Log.d("ibBtnSearch", foodDataList.toString());
-
-                }
             }
         });
 
@@ -121,12 +130,13 @@ public class FoodMap extends AppCompatActivity {
     private void init() {
         mapView = new MapView(this);
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.mapView2);
-        mapViewContainer.addView(mapView);
         mapView.setCurrentLocationRadius(2000);
         mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lat, lng), true);
         mapView.setZoomLevel(4, true);
-
+        mapView.setCalloutBalloonAdapter(customBalloonAdapter);
+        mapView.setPOIItemEventListener(markerClickListener);
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+        mapViewContainer.addView(mapView);
         ibBtnLocation.setImageResource(R.drawable.ic_baseline_my_location_red);
         isGPS = true;
     }
@@ -155,21 +165,24 @@ public class FoodMap extends AppCompatActivity {
                 });
     }
 
-    private void placeMaker() {
+    private void placeMarker() {
         Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
-        MapPOIItem marker = new MapPOIItem();
-        
+        MapPOIItem[] marker = new MapPOIItem[foodDataList.size()];
+
         dataArrayList.clear();
-        for (int i = 0; i < dataArrayList.size(); i++) {
-            marker.setItemName(foodDataList.get(i).getName());
-            double x = Double.parseDouble(foodDataList.get(i).getLongitude());
-            double y = Double.parseDouble(foodDataList.get(i).getLatitude());
-            marker.setTag(i);
-            marker.setMapPoint(MapPoint.mapPointWithGeoCoord( x, y ));
-            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
-            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-            mapView.addPOIItem(marker);
+        for (int i = 0; i < foodDataList.size(); i++) {
+            MapPOIItem mapPOIItem = new MapPOIItem();
+            double x = Double.parseDouble(foodDataList.get(i).getLatitude());
+            double y = Double.parseDouble(foodDataList.get(i).getLongitude());
+            mapPOIItem.setItemName(foodDataList.get(i).getName());
+            mapPOIItem.setTag(i);
+            mapPOIItem.setMapPoint(MapPoint.mapPointWithGeoCoord( x, y ));
+            mapPOIItem.setShowCalloutBalloonOnTouch(true);
+            mapPOIItem.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+            mapPOIItem.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+            marker[i] = mapPOIItem;
         }
+        mapView.addPOIItems(marker);
     }
     
     
@@ -194,8 +207,8 @@ public class FoodMap extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-
         dataArrayList.clear();
+        foodDataList.clear();
         String address = edtSearch.getText().toString();
         ApiService api = retrofit.create(ApiService.class);
         api.getAddress(ApiService.ApiKey, address, String.valueOf(lng), String.valueOf(lat), 2000)
@@ -222,7 +235,8 @@ public class FoodMap extends AppCompatActivity {
                                 );
                                 foodDataList.add(foodData);
                             }
-
+                            Log.d("메인", " " + foodDataList.size());
+                            placeMarker();
                         } else {
                             Log.i("메인", "리스폰스 널" + response.code());
                         }
@@ -255,4 +269,78 @@ public class FoodMap extends AppCompatActivity {
                               @Query("radius") Integer rad);
     }
 
+    class CustomBalloonAdapter implements CalloutBalloonAdapter{
+        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);;
+        TextView tvName = mCalloutBalloon.findViewById(R.id.ball_tv_name);
+        TextView tvAddress = mCalloutBalloon.findViewById(R.id.ball_tv_address);
+        public CustomBalloonAdapter() {
+
+        }
+
+        @Override
+        public View getCalloutBalloon(MapPOIItem poiItem) {
+            Log.d("마커", poiItem.getTag() + "");
+            tvName.setText(foodDataList.get(poiItem.getTag()).getName());
+            tvAddress.setText(foodDataList.get(poiItem.getTag()).getRoadAddressName());
+            return mCalloutBalloon;
+        }
+
+        @Override
+        public View getPressedCalloutBalloon(MapPOIItem poiItem) {
+            return mCalloutBalloon;
+        }
+
+    }
+
+    class MarkerClickListener implements MapView.POIItemEventListener{
+
+        @Override
+        public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+
+        }
+
+        @Override
+        public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+        }
+
+        @Override
+        public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+            Log.d("마커", "클릭됨");
+            alertDialog = View.inflate(FoodMap.this, R.layout.dialog_map, null);
+            tvName = alertDialog.findViewById(R.id.tv_name);
+            tvAddress = alertDialog.findViewById(R.id.tv_address);
+            tvPhone = alertDialog.findViewById(R.id.tv_phone);
+            tvUrl = alertDialog.findViewById(R.id.tv_url);
+
+            tvName.setText(foodDataList.get(mapPOIItem.getTag()).getName());
+            tvAddress.setText(foodDataList.get(mapPOIItem.getTag()).getRoadAddressName());
+            tvPhone.setText(foodDataList.get(mapPOIItem.getTag()).getPhone());
+            tvUrl.setText(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
+
+            new AlertDialog.Builder(FoodMap.this)
+                    .setTitle(foodDataList.get(mapPOIItem.getTag()).getName())
+                    .setView(alertDialog)
+                    .setPositiveButton("글쓰기", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            myStartActivity(WritePostActivity.class);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("취소", null)
+                    .show();
+        }
+
+        @Override
+        public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+
+        }
+    }
+
+    private void myStartActivity(Class c) {
+        Intent intent = new Intent(this, c);
+        intent.putExtra("collectionPath", COLLECTION_PATH);
+        startActivityForResult(intent, 0);
+    }
 }

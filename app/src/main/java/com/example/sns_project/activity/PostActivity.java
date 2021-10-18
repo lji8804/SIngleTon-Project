@@ -115,7 +115,7 @@ public class PostActivity extends BasicActivity {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();;
         user = FirebaseAuth.getInstance().getCurrentUser();
         String currentUid = user.getUid();
-        CollectionReference collectionReference = firebaseFirestore.collection("posts");
+        CollectionReference collectionReference = firebaseFirestore.collection(postInfo.getCategory());
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
