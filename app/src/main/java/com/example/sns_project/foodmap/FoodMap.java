@@ -2,25 +2,27 @@ package com.example.sns_project.foodmap;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.example.sns_project.KakaoLocal.Data;
 import com.example.sns_project.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -37,15 +39,18 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
-public class FoodMap extends AppCompatActivity implements MapView.POIItemEventListener{
-    private String lat, lng;
-    private ImageButton ibBtnSearch;
+public class FoodMap extends AppCompatActivity {
+    private double lat;
+    private double lng;
+    private ImageButton ibBtnSearch,ibBtnLocation;
     private EditText edtSearch;
 
 
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
     private LocationManager lm;
     private MapView mapView;
+    private FusedLocationProviderClient fusedLocationClient;
+    private boolean isGPS ;
 
     MutableLiveData<Data> kakao = new MutableLiveData<>();
     ArrayList<Data> dataArrayList = new ArrayList<>();
@@ -57,16 +62,19 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
 
         ibBtnSearch = findViewById(R.id.ibBtnSearch);
         edtSearch = findViewById(R.id.edtSearch);
+        ibBtnLocation = findViewById(R.id.ibBtnLocation);
 
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        //GPS
+        getGPSLocation();
 
         // GPS 프로바이더 사용가능여부
-        boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        final boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         // 네트워크 프로바이더 사용가능여부
-        boolean isNetworkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        final boolean isNetworkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         // 수동으로 위치 구하기
-        getCurrentLocation();
+//        getCurrentLocation();
 
         mapView = new MapView(this);
         //검색된 정보 가져오기
@@ -74,47 +82,73 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
             @Override
             public void onClick(View view) {
                 getFoodData();
+                if(foodDataList.size() != 0){
+                    placeMaker();
+                    Log.d("ibBtnSearch", foodDataList.toString());
+
+                }
+            }
+        });
+
+
+        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.mapView2);
+        mapViewContainer.addView(mapView);
+        mapView.setCurrentLocationRadius(2000);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lat, lng), true);
+        mapView.setZoomLevel(4, true);
+
+        isGPS= false;
+        ibBtnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isGPS == false) {
+                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+                    ibBtnLocation.setImageResource(R.drawable.ic_baseline_my_location_red);
+                    isGPS = true;
+                } else {
+                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+                    ibBtnLocation.setImageResource(R.drawable.ic_baseline_my_location_24);
+                    isGPS = false;
+                }
             }
         });
 
 
 
-
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                lat = String.valueOf(location.getLatitude());
-                lng = String.valueOf(location.getLongitude());
-
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            public void onProviderEnabled(String provider) {
-            }
-
-            public void onProviderDisabled(String provider) {
-            }
-
-        };
-        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.mapView2);
-        mapViewContainer.addView(mapView);
-        mapView.setCurrentLocationRadius(2000);
-
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(Double.parseDouble(lat), Double.parseDouble(lng)), true);
-        mapView.setZoomLevel(4, true);
-
-        String url = "kakaomap://search?q=맛집&p=" + lm;
-
+//        String url = "kakaomap://search?q=맛집&p=" + lm;
 //        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //        Log.d("인텐트",intent.toString());
 //        startActivity(intent);
     }
 
+
+    private void getGPSLocation() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                            Manifest.permission.INTERNET,
+                            Manifest.permission.ACCESS_FINE_LOCATION},
+                    MODE_PRIVATE);
+            return;
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            lat = location.getLatitude();
+                            lng = location.getLongitude();
+                            Log.d("getGPSLocation", "생성 lat= "+lat + ", lng = "+ lng);
+                        }
+                    }
+                });
+    }
+
     private void placeMaker() {
         Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
         MapPOIItem marker = new MapPOIItem();
-
+        
         dataArrayList.clear();
         for (int i = 0; i < dataArrayList.size(); i++) {
             marker.setItemName(foodDataList.get(i).getName());
@@ -127,17 +161,19 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
             mapView.addPOIItem(marker);
         }
     }
+    
+    
 
-    private void getCurrentLocation() {
-        String locationProvider = LocationManager.GPS_PROVIDER;
-        @SuppressLint("MissingPermission")
-        Location lastKnownLocation = lm.getLastKnownLocation(locationProvider);
-        if (lastKnownLocation != null) {
-            lng = String.valueOf(lastKnownLocation.getLongitude());
-            lat = String.valueOf(lastKnownLocation.getLatitude());
-            Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
-        }
-    }
+//    private void getCurrentLocation() {
+//        String locationProvider = LocationManager.GPS_PROVIDER;
+//        @SuppressLint("MissingPermission")
+//        Location lastKnownLocation = lm.getLastKnownLocation(locationProvider);
+//        if (lastKnownLocation != null) {
+//            lng = String.valueOf(lastKnownLocation.getLongitude());
+//            lat = String.valueOf(lastKnownLocation.getLatitude());
+//            Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
+//        }
+//    }
 
     private void getFoodData() {
 
@@ -152,7 +188,7 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
         dataArrayList.clear();
         String address = edtSearch.getText().toString();
         ApiService api = retrofit.create(ApiService.class);
-        api.getAddress(ApiService.ApiKey, address, lng, lat, 20000)
+        api.getAddress(ApiService.ApiKey, address, String.valueOf(lng), String.valueOf(lat), 2000)
                 .enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(Call<Data> call, Response<Data> response) {
@@ -176,6 +212,7 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
                                 );
                                 foodDataList.add(foodData);
                             }
+
                         } else {
                             Log.i("메인", "리스폰스 널" + response.code());
                         }
@@ -187,34 +224,12 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
                     }
                 });
 
-        kakao.observe(this, new Observer<Data>() {
-            @Override
-            public void onChanged(Data data) {
-//               Log.i("메인", data.documentsList.get(0).getAddress_name());
-            }
-        });
-        placeMaker();
-
-    }
-
-    @Override
-    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
-
-    }
-
-    @Override
-    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
-
-    }
-
-    @Override
-    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
-
-    }
-
-    @Override
-    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
-
+//        kakao.observe(this, new Observer<Data>() {
+//            @Override
+//            public void onChanged(Data data) {
+////               Log.i("메인", data.documentsList.get(0).getAddress_name());
+//            }
+//        });
     }
 
 
@@ -228,7 +243,26 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
                               @Query("x") String lon,
                               @Query("y") String lat,
                               @Query("radius") Integer rad);
-
     }
+
+
+
+    //GPS
+    // GPS가 켜져있는지 확인
+//    private fun checkLocationService(): Boolean {
+//        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+//    }
+
+    // 위치추적 시작
+//    private fun startTracking() {
+//        binding.mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
+//    }
+
+    // 위치추적 중지
+//    private fun stopTracking() {
+//        binding.mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
+//    }
+
 
 }
