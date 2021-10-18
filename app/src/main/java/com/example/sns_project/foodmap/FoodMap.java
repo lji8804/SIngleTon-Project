@@ -164,16 +164,16 @@ public class FoodMap extends AppCompatActivity {
     
     
 
-//    private void getCurrentLocation() {
-//        String locationProvider = LocationManager.GPS_PROVIDER;
-//        @SuppressLint("MissingPermission")
-//        Location lastKnownLocation = lm.getLastKnownLocation(locationProvider);
-//        if (lastKnownLocation != null) {
-//            lng = String.valueOf(lastKnownLocation.getLongitude());
-//            lat = String.valueOf(lastKnownLocation.getLatitude());
-//            Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
-//        }
-//    }
+    private void getCurrentLocation() {
+        String locationProvider = LocationManager.GPS_PROVIDER;
+        @SuppressLint("MissingPermission")
+        Location lastKnownLocation = lm.getLastKnownLocation(locationProvider);
+        if (lastKnownLocation != null) {
+            lng = lastKnownLocation.getLongitude();
+            lat = lastKnownLocation.getLatitude();
+            Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
+        }
+    }
 
     private void getFoodData() {
 
@@ -245,24 +245,6 @@ public class FoodMap extends AppCompatActivity {
                               @Query("radius") Integer rad);
     }
 
-
-
-    //GPS
-    // GPS가 켜져있는지 확인
-//    private fun checkLocationService(): Boolean {
-//        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-//    }
-
-    // 위치추적 시작
-//    private fun startTracking() {
-//        binding.mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
-//    }
-
-    // 위치추적 중지
-//    private fun stopTracking() {
-//        binding.mapView.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
-//    }
 
 
 }
