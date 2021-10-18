@@ -24,6 +24,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -39,7 +40,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
-public class FoodMap extends AppCompatActivity {
+public class FoodMap extends AppCompatActivity implements MapView.POIItemEventListener {
     private double lat;
     private double lng;
     private ImageButton ibBtnSearch,ibBtnLocation;
@@ -50,6 +51,7 @@ public class FoodMap extends AppCompatActivity {
     private LocationManager lm;
     private MapView mapView;
     private FusedLocationProviderClient fusedLocationClient;
+    private MapPOIItem marker;
     private boolean isGPS ;
 
     MutableLiveData<Data> kakao = new MutableLiveData<>();
@@ -75,7 +77,7 @@ public class FoodMap extends AppCompatActivity {
 
         // 수동으로 위치 구하기
 //        getCurrentLocation();
-        
+
         //초기화면설정
         init();
 
@@ -86,6 +88,8 @@ public class FoodMap extends AppCompatActivity {
 //        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //        Log.d("인텐트",intent.toString());
 //        startActivity(intent);
+
+
     }
 
     private void onClickListener() {
@@ -101,7 +105,7 @@ public class FoodMap extends AppCompatActivity {
                 }
             }
         });
-
+        //GPS 설정하기
         ibBtnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +120,27 @@ public class FoodMap extends AppCompatActivity {
                 }
             }
         });
+        mapView.setPOIItemEventListener(new MapView.POIItemEventListener() {
+            @Override
+            public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+            }
+
+            @Override
+            public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+            }
+
+            @Override
+            public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+
+            }
+
+            @Override
+            public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+
+            }
+        });
+
     }
 
     private void init() {
@@ -129,6 +154,7 @@ public class FoodMap extends AppCompatActivity {
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
         ibBtnLocation.setImageResource(R.drawable.ic_baseline_my_location_red);
         isGPS = true;
+        mapView.setCalloutBalloonAdapter(new CustomCalloutBalloonAdapter());
     }
 
 
@@ -157,19 +183,19 @@ public class FoodMap extends AppCompatActivity {
 
     private void placeMaker() {
         Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
-        MapPOIItem marker = new MapPOIItem();
+        marker = new MapPOIItem();
         
-        dataArrayList.clear();
-        for (int i = 0; i < dataArrayList.size(); i++) {
+        for (int i = 0; i < foodDataList.size(); i++) {
             marker.setItemName(foodDataList.get(i).getName());
             double x = Double.parseDouble(foodDataList.get(i).getLongitude());
             double y = Double.parseDouble(foodDataList.get(i).getLatitude());
             marker.setTag(i);
             marker.setMapPoint(MapPoint.mapPointWithGeoCoord( x, y ));
+            mapView.addPOIItem(marker);
             marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
             marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-            mapView.addPOIItem(marker);
         }
+        marker.setShowCalloutBalloonOnTouch(true);
     }
     
     
@@ -242,6 +268,26 @@ public class FoodMap extends AppCompatActivity {
 //        });
     }
 
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+
+    }
+
 
     private interface ApiService {
         String baseUrl = "https://dapi.kakao.com/";
@@ -253,6 +299,23 @@ public class FoodMap extends AppCompatActivity {
                               @Query("x") String lon,
                               @Query("y") String lat,
                               @Query("radius") Integer rad);
+    }
+
+    class CustomCalloutBalloonAdapter implements CalloutBalloonAdapter {
+        private final View mCalloutBalloon = null;
+
+        public CustomCalloutBalloonAdapter() {
+        }
+
+        @Override
+        public View getCalloutBalloon(MapPOIItem poiItem) {
+            return null;
+        }
+
+        @Override
+        public View getPressedCalloutBalloon(MapPOIItem poiItem) {
+            return null;
+        }
     }
 
 }
