@@ -141,7 +141,7 @@ public class HomeFragment extends Fragment {
                 case R.id.home_floatingActionButton:
 //                    Intent intent = new Intent(getActivity(), FoodMap.class);
 //                    startActivity(intent);
-                    myStartActivity(WritePostActivity.class);
+                    myStartActivity(FoodMap.class);
                     break;
             }
         }
