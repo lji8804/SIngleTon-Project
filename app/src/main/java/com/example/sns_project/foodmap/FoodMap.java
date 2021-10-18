@@ -75,8 +75,20 @@ public class FoodMap extends AppCompatActivity {
 
         // 수동으로 위치 구하기
 //        getCurrentLocation();
+        
+        //초기화면설정
+        init();
 
-        mapView = new MapView(this);
+        //리스너설정
+        onClickListener();
+
+//        String url = "kakaomap://search?q=맛집&p=" + lm;
+//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//        Log.d("인텐트",intent.toString());
+//        startActivity(intent);
+    }
+
+    private void onClickListener() {
         //검색된 정보 가져오기
         ibBtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +102,6 @@ public class FoodMap extends AppCompatActivity {
             }
         });
 
-
-        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.mapView2);
-        mapViewContainer.addView(mapView);
-        mapView.setCurrentLocationRadius(2000);
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lat, lng), true);
-        mapView.setZoomLevel(4, true);
-
-        isGPS= false;
         ibBtnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,13 +116,19 @@ public class FoodMap extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void init() {
+        mapView = new MapView(this);
+        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.mapView2);
+        mapViewContainer.addView(mapView);
+        mapView.setCurrentLocationRadius(2000);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lat, lng), true);
+        mapView.setZoomLevel(4, true);
 
-
-//        String url = "kakaomap://search?q=맛집&p=" + lm;
-//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//        Log.d("인텐트",intent.toString());
-//        startActivity(intent);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+        ibBtnLocation.setImageResource(R.drawable.ic_baseline_my_location_red);
+        isGPS = true;
     }
 
 
@@ -244,7 +254,5 @@ public class FoodMap extends AppCompatActivity {
                               @Query("y") String lat,
                               @Query("radius") Integer rad);
     }
-
-
 
 }
