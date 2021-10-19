@@ -10,17 +10,15 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.sns_project.activity.MainActivity;
 
-public class LodingView extends AppCompatActivity {
+public class LoadingView extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_view);
-
         startLoading();
-
-
     }
+
     private void startLoading() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

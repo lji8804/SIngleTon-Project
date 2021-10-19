@@ -102,6 +102,7 @@ public class ReviewFragment extends Fragment {
                 }
             }
         });
+        reviewAdapter.notifyDataSetChanged();
 
         postsUpdate(false);
         return view;
@@ -127,15 +128,7 @@ public class ReviewFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                /*
-                case R.id.logoutButton:
-                    FirebaseAuth.getInstance().signOut();
-                    myStartActivity(SignUpActivity.class);
-                    break;
-                */
                 case R.id.floatingActionButton:
-//                    Intent intent = new Intent(getActivity(), FoodMap.class);
-//                    startActivity(intent);
                     myStartActivity(WritePostActivity.class);
                     break;
             }

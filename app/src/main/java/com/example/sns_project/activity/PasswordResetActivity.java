@@ -7,12 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
 import com.example.sns_project.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-
 import static com.example.sns_project.Util.showToast;
 
 public class PasswordResetActivity extends AppCompatActivity {

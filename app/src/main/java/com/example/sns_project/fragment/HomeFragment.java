@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
+        homeAdapter.notifyDataSetChanged();
         postsUpdate(false);
         return view;
     }
@@ -131,15 +131,7 @@ public class HomeFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                /*
-                case R.id.logoutButton:
-                    FirebaseAuth.getInstance().signOut();
-                    myStartActivity(SignUpActivity.class);
-                    break;
-                */
                 case R.id.home_floatingActionButton:
-//                    Intent intent = new Intent(getActivity(), FoodMap.class);
-//                    startActivity(intent);
                     myStartActivity(FoodMap.class);
                     break;
             }
