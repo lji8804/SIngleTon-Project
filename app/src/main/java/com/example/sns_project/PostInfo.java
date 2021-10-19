@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class PostInfo implements Serializable {
     private String category;
+    private String placeName;
+    private String foodCategory;
     private String title;
     private ArrayList<String> contents;
     private ArrayList<String> formats;
@@ -15,8 +17,10 @@ public class PostInfo implements Serializable {
     private Date createdAt;
     private String id;
 
-    public PostInfo(String category, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
+    public PostInfo(String category, String placeName, String foodCategory, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
         this.category = category;
+        this.placeName = placeName;
+        this.foodCategory = foodCategory;
         this.title = title;
         this.contents = contents;
         this.formats = formats;
@@ -44,6 +48,8 @@ public class PostInfo implements Serializable {
 
     public Map<String, Object> getPostInfo(){
         Map<String, Object> docData = new HashMap<>();
+        docData.put("placeName", placeName);
+        docData.put("foodCategory", foodCategory);
         docData.put("title",title);
         docData.put("contents",contents);
         docData.put("formats",formats);

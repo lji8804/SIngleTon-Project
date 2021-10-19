@@ -121,7 +121,6 @@ public class MainActivity extends BasicActivity {
                                     .commit();
                             return true;
                         case R.id.userList:
-
                             Intent intent = new Intent(MainActivity.this, FoodMap.class);
                             startActivity(intent);
                             return true;

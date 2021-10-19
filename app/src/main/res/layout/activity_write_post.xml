@@ -22,12 +22,14 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/tv_food_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="카테고리 들어갈 자리"
                 android:textSize="18sp"/>
 
             <TextView
+                android:id="@+id/tv_place_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="음식점 이름"
