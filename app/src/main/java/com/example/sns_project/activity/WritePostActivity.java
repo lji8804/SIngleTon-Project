@@ -25,14 +25,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
-
 import static com.example.sns_project.Util.GALLERY_IMAGE;
 import static com.example.sns_project.Util.GALLERY_VIDEO;
 import static com.example.sns_project.Util.INTENT_MEDIA;
@@ -171,7 +169,7 @@ public class WritePostActivity extends BasicActivity {
                     final View selectedView = (View) selectedImageVIew.getParent();
                     String path = pathList.get(parent.indexOfChild(selectedView) - 1);
                     if(isStorageUrl(path)){
-                        StorageReference desertRef = storageRef.child("posts/" + postInfo.getId() + "/" + storageUrlToName(path));
+                        StorageReference desertRef = storageRef.child(collectionPath + "/" + postInfo.getId() + "/" + storageUrlToName(path));
                         desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -243,7 +241,7 @@ public class WritePostActivity extends BasicActivity {
                             formatList.add("text");
                         }
                         String[] pathArray = path.split("\\.");
-                        final StorageReference mountainImagesRef = storageRef.child("posts/" + documentReference.getId() + "/" + pathCount + "." + pathArray[pathArray.length - 1]);
+                        final StorageReference mountainImagesRef = storageRef.child(collectionPath + "/" + documentReference.getId() + "/" + pathCount + "." + pathArray[pathArray.length - 1]);
                         try {
                             InputStream stream = new FileInputStream(new File(pathList.get(pathCount)));
                             StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("index", "" + (contentsList.size() - 1)).build();
