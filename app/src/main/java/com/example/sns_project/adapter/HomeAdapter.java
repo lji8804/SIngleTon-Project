@@ -46,7 +46,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
     public HomeAdapter(Activity activity, ArrayList<PostInfo> myDataset) {
         this.mDataset = myDataset;
         this.activity = activity;
-
         firebaseHelper = new FirebaseHelper(activity);
     }
 

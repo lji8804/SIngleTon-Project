@@ -28,6 +28,16 @@ public class PostInfo implements Serializable {
         this.createdAt = createdAt;
     }
 
+    public PostInfo(String category, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
+        this.category = category;
+        this.title = title;
+        this.contents = contents;
+        this.formats = formats;
+        this.publisher = publisher;
+        this.createdAt = createdAt;
+        this.id = id;
+    }
+
     public PostInfo(String category, String placeName, String foodCategory, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
         this.category = category;
         this.placeName = placeName;
