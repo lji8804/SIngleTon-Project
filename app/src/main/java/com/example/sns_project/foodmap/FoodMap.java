@@ -25,7 +25,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.sns_project.KakaoLocal.Data;
 import com.example.sns_project.R;
 import com.example.sns_project.activity.WritePostActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
@@ -139,7 +141,7 @@ public class FoodMap extends AppCompatActivity  {
 
 
     private void getGPSLocation() {
-        FusedLocationClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
                             Manifest.permission.INTERNET,
