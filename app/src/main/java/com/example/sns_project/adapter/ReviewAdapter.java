@@ -67,12 +67,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
             }
         });
 
-        cardView.findViewById(R.id.menu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                showPopup(v, mainViewHolder.getAdapterPosition());
-            }
-        });
+//        cardView.findViewById(R.id.menu).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                showPopup(v, mainViewHolder.getAdapterPosition());
+//            }
+//        });
 
         return mainViewHolder;
     }

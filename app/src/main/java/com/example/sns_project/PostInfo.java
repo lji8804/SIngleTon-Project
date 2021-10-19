@@ -28,8 +28,10 @@ public class PostInfo implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public PostInfo(String category, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
+    public PostInfo(String category, String placeName, String foodCategory, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
         this.category = category;
+        this.placeName = placeName;
+        this.foodCategory = foodCategory;
         this.title = title;
         this.contents = contents;
         this.formats = formats;
@@ -58,6 +60,18 @@ public class PostInfo implements Serializable {
         return  docData;
     }
 
+    public String getPlaceName() {
+        return placeName;
+    }
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+    public String getFoodCategory() {
+        return foodCategory;
+    }
+    public void setFoodCategory(String foodCategory) {
+        this.foodCategory = foodCategory;
+    }
     public String getCategory() {
         return category;
     }

@@ -172,8 +172,9 @@ public class ReviewFragment extends Fragment {
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                postList.add(new PostInfo(
-                                        COLLECTION_PATH,
+                                postList.add(new PostInfo(COLLECTION_PATH,
+                                        document.getData().get("placeName").toString(),
+                                        document.getData().get("foodCategory").toString(),
                                         document.getData().get("title").toString(),
                                         (ArrayList<String>) document.getData().get("contents"),
                                         (ArrayList<String>) document.getData().get("formats"),
