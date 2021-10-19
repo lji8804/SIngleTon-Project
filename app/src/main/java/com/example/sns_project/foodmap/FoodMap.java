@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -45,7 +46,7 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
     private double lng;
     private ImageButton ibBtnSearch,ibBtnLocation;
     private EditText edtSearch;
-
+    private double pressedTime;
 
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
     private LocationManager lm;
@@ -318,4 +319,22 @@ public class FoodMap extends AppCompatActivity implements MapView.POIItemEventLi
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (pressedTime == 0) {
+            Toast.makeText(getApplicationContext(), " 한 번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show();
+            pressedTime = System.currentTimeMillis();
+        } else {
+            int seconds = (int) (System.currentTimeMillis() - pressedTime);
+
+            if (seconds > 2000) {
+                Toast.makeText(getApplicationContext(), " 한 번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show();
+                pressedTime = 0;
+            } else {
+                super.onBackPressed();
+                // app 종료 시키기
+                finish();
+            }
+        }
+    }
 }
