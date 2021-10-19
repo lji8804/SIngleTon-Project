@@ -18,7 +18,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.TextView;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 58c4d46af0415508a654340762c4aa1ff05bd43b
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,7 +60,10 @@ public class FoodMap extends AppCompatActivity {
     private double pressedTime;
     private View alertDialog;
     private TextView tvName, tvAddress, tvPhone, tvUrl;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 58c4d46af0415508a654340762c4aa1ff05bd43b
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
     private LocationManager lm;
     private MapView mapView;
@@ -66,6 +72,7 @@ public class FoodMap extends AppCompatActivity {
     private MarkerClickListener markerClickListener = new MarkerClickListener();
     private CustomBalloonAdapter customBalloonAdapter;
     private final String COLLECTION_PATH = "posts";
+    private String foodCategory, placeName;
 
     MutableLiveData<Data> kakao = new MutableLiveData<>();
     ArrayList<Data> dataArrayList = new ArrayList<>();
@@ -310,7 +317,6 @@ public class FoodMap extends AppCompatActivity {
 
         @Override
         public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
-            Log.d("마커", "클릭됨");
             alertDialog = View.inflate(FoodMap.this, R.layout.dialog_map, null);
             tvName = alertDialog.findViewById(R.id.tv_name);
             tvAddress = alertDialog.findViewById(R.id.tv_address);
@@ -318,9 +324,12 @@ public class FoodMap extends AppCompatActivity {
             tvUrl = alertDialog.findViewById(R.id.tv_url);
 
             tvName.setText(foodDataList.get(mapPOIItem.getTag()).getName());
-            tvAddress.setText(foodDataList.get(mapPOIItem.getTag()).getRoadAddressName());
-            tvPhone.setText(foodDataList.get(mapPOIItem.getTag()).getPhone());
+            tvAddress.setText(foodDataList.get(mapPOIItem.getTag()).getCategoryName());
+            tvPhone.setText(foodDataList.get(mapPOIItem.getTag()).getRoadAddressName());
             tvUrl.setText(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
+
+            placeName = tvName.getText().toString();
+            foodCategory = tvAddress.getText().toString();
 
             new AlertDialog.Builder(FoodMap.this)
                     .setTitle(foodDataList.get(mapPOIItem.getTag()).getName())
@@ -364,6 +373,8 @@ public class FoodMap extends AppCompatActivity {
     private void myStartActivity(Class c) {
         Intent intent = new Intent(this, c);
         intent.putExtra("collectionPath", COLLECTION_PATH);
+        intent.putExtra("placeName", placeName);
+        intent.putExtra("foodCategory", foodCategory);
         startActivityForResult(intent, 0);
     }
 }

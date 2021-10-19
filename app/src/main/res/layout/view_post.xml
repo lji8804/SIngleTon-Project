@@ -19,6 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        tools:text="2019-04-25" />
+        tools:text="2021-10-20" />
 
 </merge>

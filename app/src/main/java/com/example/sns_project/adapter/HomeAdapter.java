@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,7 +46,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
     public HomeAdapter(Activity activity, ArrayList<PostInfo> myDataset) {
         this.mDataset = myDataset;
         this.activity = activity;
-
         firebaseHelper = new FirebaseHelper(activity);
     }
 
@@ -73,12 +73,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
             }
         });
 
-        cardView.findViewById(R.id.menu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                showPopup(v, mainViewHolder.getAdapterPosition());
-            }
-        });
+//        cardView.findViewById(R.id.menu).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                showPopup(v, mainViewHolder.getAdapterPosition());
+//            }
+//        });
 
         return mainViewHolder;
     }
@@ -87,9 +87,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         CardView cardView = holder.cardView;
         TextView titleTextView = cardView.findViewById(R.id.titleTextView);
+        TextView tvCategory = cardView.findViewById(R.id.tv_category);
 
         PostInfo postInfo = mDataset.get(position);
         titleTextView.setText(postInfo.getTitle());
+        tvCategory.setText(postInfo.getPlaceName());
 
         ReadContentsVIew readContentsVIew = cardView.findViewById(R.id.readContentsView);
         LinearLayout contentsLayout = cardView.findViewById(R.id.contentsLayout);

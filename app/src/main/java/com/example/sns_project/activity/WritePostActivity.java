@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.example.sns_project.R;
 import com.example.sns_project.PostInfo;
@@ -43,7 +45,7 @@ import static com.example.sns_project.Util.storageUrlToName;
 
 public class WritePostActivity extends BasicActivity {
     private static final String TAG = "WritePostActivity";
-    private String collectionPath;
+    private String collectionPath, placeName, foodCategory;
     private FirebaseUser user;
     private StorageReference storageRef;
     private ArrayList<String> pathList = new ArrayList<>();
@@ -54,6 +56,7 @@ public class WritePostActivity extends BasicActivity {
     private EditText selectedEditText;
     private EditText contentsEditText;
     private EditText titleEditText;
+    private TextView tvFoodCategory, tvPlaceName;
     private PostInfo postInfo;
     private int pathCount, successCount;
 
@@ -68,6 +71,8 @@ public class WritePostActivity extends BasicActivity {
         loaderLayout = findViewById(R.id.loaderLyaout);
         contentsEditText = findViewById(R.id.contentsEditText);
         titleEditText = findViewById(R.id.titleEditText);
+        tvPlaceName = findViewById(R.id.tv_place_name);
+        tvFoodCategory = findViewById(R.id.tv_food_category);
 
         findViewById(R.id.check).setOnClickListener(onClickListener);
         findViewById(R.id.image).setOnClickListener(onClickListener);
@@ -92,6 +97,10 @@ public class WritePostActivity extends BasicActivity {
 
         postInfo = (PostInfo) getIntent().getSerializableExtra("postInfo");
         collectionPath = getIntent().getStringExtra("collectionPath");
+        placeName = getIntent().getStringExtra("placeName");
+        foodCategory = getIntent().getStringExtra("foodCategory");
+        tvPlaceName.setText(placeName);
+        tvFoodCategory.setText(foodCategory);
         postInit();
     }
 
@@ -260,7 +269,7 @@ public class WritePostActivity extends BasicActivity {
                                             successCount--;
                                             contentsList.set(index, uri.toString());
                                             if (successCount == 0) {
-                                                PostInfo postInfo = new PostInfo(collectionPath, title, contentsList, formatList, user.getUid(), date);
+                                                PostInfo postInfo = new PostInfo(collectionPath, placeName, foodCategory, title, contentsList, formatList, user.getUid(), date);
                                                 storeUpload(documentReference, postInfo);
                                             }
                                         }
@@ -275,7 +284,7 @@ public class WritePostActivity extends BasicActivity {
                 }
             }
             if (successCount == 0) {
-                storeUpload(documentReference, new PostInfo(collectionPath, title, contentsList, formatList, user.getUid(), date));
+                storeUpload(documentReference, new PostInfo(collectionPath, placeName, foodCategory, title, contentsList, formatList, user.getUid(), date));
             }
         } else {
             showToast(WritePostActivity.this, "제목을 입력해주세요.");
@@ -283,6 +292,7 @@ public class WritePostActivity extends BasicActivity {
     }
 
     private void storeUpload(DocumentReference documentReference, final PostInfo postInfo) {
+        // db에 추가
         documentReference.set(postInfo.getPostInfo())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
