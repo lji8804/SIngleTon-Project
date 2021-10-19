@@ -17,6 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.TextView;
+<<<<<<< HEAD
+
+=======
+>>>>>>> 58c4d46af0415508a654340762c4aa1ff05bd43b
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +59,10 @@ public class FoodMap extends AppCompatActivity {
     private double pressedTime;
     private View alertDialog;
     private TextView tvName, tvAddress, tvPhone, tvUrl;
+<<<<<<< HEAD
+
+=======
+>>>>>>> 58c4d46af0415508a654340762c4aa1ff05bd43b
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
     private LocationManager lm;
     private MapView mapView;
@@ -225,7 +233,9 @@ public class FoodMap extends AppCompatActivity {
                                 Log.d("메인", "카운트" + response.body().getMeta().getPageableCount());
                                 kakao.setValue(response.body());
                                 dataArrayList.add(response.body());
-                                Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
+//                                Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
+                            }
+                            for (int i = 0; i < dataArrayList.size()-1; i++) {
                                 String[] colum = {
                                         dataArrayList.get(i).getDocuments().get(i).getPlaceName(),
                                         dataArrayList.get(i).getDocuments().get(i).getCategoryName(),
@@ -363,7 +373,7 @@ public class FoodMap extends AppCompatActivity {
             }
         }
     }
-    
+
     private void myStartActivity(Class c) {
         Intent intent = new Intent(this, c);
         intent.putExtra("collectionPath", COLLECTION_PATH);
