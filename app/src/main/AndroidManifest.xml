@@ -21,16 +21,16 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-<!--                <data-->
-<!--                    android:scheme="http"-->
-<!--                    android:host="google.com" />-->
-<!--            </intent-filter>-->
+                <data
+                    android:scheme="http"
+                    android:host="google.com" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,17 +57,15 @@
         </activity>
         <activity android:name=".foodmap.FoodMap">
         </activity>
-<!--        <activity-->
-<!--            android:name=".LoadingView"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+        <activity
+            android:name=".LoadingView"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="a60d55e88a56dd6e1223beb466cb6f4e"/>
     </application>
-
-<!---->
 </manifest>

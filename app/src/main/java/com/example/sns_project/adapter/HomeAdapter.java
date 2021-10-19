@@ -51,8 +51,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
     private ArrayList<ArrayList<SimpleExoPlayer>> playerArrayListArrayList = new ArrayList<>();
     private final int MORE_INDEX = 2;
     private ImageView ivProfile;
-    TextView tvTitle, tvID, tvGotoURL;
-    private ArrayList<String> userInfoArrayList = new ArrayList<>();
+    private TextView tvTitle, tvID, tvGotoURL;
+
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -127,28 +127,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
 
     private void getUserInfo(int position) {
 
-        DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(mDataset.get(position).getPublisher());
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        if (document.exists()) {
-                            Log.d("가져오기", "DocumentSnapshot data: " + document.getData());
-                            if(document.getData().get("photoUrl") != null){
-                                Glide.with(ivProfile.getContext()).load(document.getData().get("photoUrl")).centerCrop().override(500).into(ivProfile);
-                            }
-                            tvID.setText(document.getData().get("name").toString());
-                        } else {
-                            Log.d("가져오기", "No such document");
-                        }
-                    }
-                } else {
-                    Log.d("가져오기", "get failed with ", task.getException());
-                }
-            }
-        });
+
     }
 
     @Override

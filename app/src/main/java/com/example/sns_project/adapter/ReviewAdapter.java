@@ -94,7 +94,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
         tvTitle.setText(postInfo.getTitle());
         tvGotoURL.setText(postInfo.getPlaceName());
         tvID.setText(ID);
-        Glide.with(holder.cardView.getContext()).load(imageUrl).into(ivProfile);
+        Glide.with(ivProfile.getContext()).load(imageUrl).into(ivProfile);
 
 
 
