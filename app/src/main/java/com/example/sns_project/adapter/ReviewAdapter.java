@@ -39,6 +39,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
     private final int MORE_INDEX = 2;
     private ImageView ivProfile;
     TextView tvTitle, tvID, tvGotoURL;
+    private String imageUrl, ID;
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -88,11 +89,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
         tvID = cardView.findViewById(R.id.tv_id);
         tvGotoURL = cardView.findViewById(R.id.tv_gotoURL);
 
+        getUserInfo(position);
         PostInfo postInfo = mDataset.get(position);
         tvTitle.setText(postInfo.getTitle());
         tvGotoURL.setText(postInfo.getPlaceName());
+        tvID.setText(ID);
+        Glide.with(holder.cardView.getContext()).load(imageUrl).into(ivProfile);
 
-        getUserInfo();
+
 
 //        ReadContentsVIew readContentsVIew = cardView.findViewById(R.id.readContentsView);
 //        LinearLayout contentsLayout = cardView.findViewById(R.id.contentsLayout);
@@ -111,8 +115,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
 //        }
     }
 
-    private void getUserInfo() {
-        DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document();
+    private void getUserInfo(int position) {
+        DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(mDataset.get(position).getPublisher());
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -121,9 +125,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
                     if (document != null) {
                         if (document.exists()) {
                             if(document.getData().get("photoUrl") != null){
-                                Glide.with(ivProfile.getContext()).load(document.getData().get("photoUrl")).centerCrop().override(500).into(ivProfile);
+                                imageUrl = document.getData().get("photoUrl").toString();
                             }
-                            tvID.setText(document.getData().get("name").toString());
+                            ID = document.getData().get("name").toString();
                         } else {
 
                         }
