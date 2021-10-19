@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
+        homeAdapter.notifyDataSetChanged();
         postsUpdate(false);
         return view;
     }

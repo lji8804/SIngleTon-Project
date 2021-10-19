@@ -55,6 +55,7 @@ public class BasicActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent2);
                 Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
         }
 
