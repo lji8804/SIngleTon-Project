@@ -10,7 +10,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.sns_project.activity.MainActivity;
 
-public class LoadingView extends AppCompatActivity {
+public class LodingView extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
