@@ -102,7 +102,6 @@ public class ReviewFragment extends Fragment {
                 }
             }
         });
-        reviewAdapter.notifyDataSetChanged();
 
         postsUpdate(false);
         return view;
