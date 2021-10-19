@@ -72,14 +72,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
                 activity.startActivity(intent);
             }
         });
-
-//        cardView.findViewById(R.id.menu).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                showPopup(v, mainViewHolder.getAdapterPosition());
-//            }
-//        });
-
         return mainViewHolder;
     }
 
@@ -114,31 +106,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
     public int getItemCount() {
         return mDataset.size();
     }
-
-
-    // 팝업 메뉴 설정
-//    private void showPopup(View v, final int position) {
-//        PopupMenu popup = new PopupMenu(activity, v);
-//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem menuItem) {
-//                switch (menuItem.getItemId()) {
-//                    case R.id.modify:
-//                        myStartActivity(WritePostActivity.class, mDataset.get(position));
-//                        return true;
-//                    case R.id.delete:
-//                        firebaseHelper.storageDelete(mDataset.get(position));
-//                        return true;
-//                    default:
-//                        return false;
-//                }
-//            }
-//        });
-
-//        MenuInflater inflater = popup.getMenuInflater();
-//        inflater.inflate(R.menu.post, popup.getMenu());
-//        popup.show();
-//    }
 
     private void myStartActivity(Class c, PostInfo postInfo) {
         Intent intent = new Intent(activity, c);

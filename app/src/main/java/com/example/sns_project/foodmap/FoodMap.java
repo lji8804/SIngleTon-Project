@@ -3,7 +3,6 @@ package com.example.sns_project.foodmap;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -168,6 +167,7 @@ public class FoodMap extends AppCompatActivity {
 
     private void placeMarker() {
         Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
+        mapView.removeAllPOIItems();
         MapPOIItem[] marker = new MapPOIItem[foodDataList.size()];
 
         dataArrayList.clear();
@@ -212,14 +212,18 @@ public class FoodMap extends AppCompatActivity {
         foodDataList.clear();
         String address = edtSearch.getText().toString();
         ApiService api = retrofit.create(ApiService.class);
-        api.getAddress(ApiService.ApiKey, address, String.valueOf(lng), String.valueOf(lat), 2000)
+        api.getAddress(ApiService.ApiKey, "%" + address + "%", String.valueOf(lng), String.valueOf(lat), 2000)
                 .enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(Call<Data> call, Response<Data> response) {
                         if (response.body() != null) {
-                            for (int i = 0; i < 15; i++) {
+                            if(response.body().getMeta().getPageableCount() >= 15){
+                                response.body().getMeta().setPageableCount(15);
+                            }
+                            Log.d("메인", response.body().toString());
+                            for (int i = 0; i < response.body().getMeta().getPageableCount(); i++) {
+                                Log.d("메인", "카운트" + response.body().getMeta().getPageableCount());
                                 kakao.setValue(response.body());
-//                                Log.i("메인", kakao.getValue().getDocuments().get(i).getPlaceName());
                                 dataArrayList.add(response.body());
                                 Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
                                 String[] colum = {

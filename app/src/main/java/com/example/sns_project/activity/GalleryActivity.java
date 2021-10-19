@@ -13,12 +13,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.sns_project.R;
 import com.example.sns_project.adapter.GalleryAdapter;
-
 import java.util.ArrayList;
-
 import static com.example.sns_project.Util.GALLERY_IMAGE;
 import static com.example.sns_project.Util.GALLERY_VIDEO;
 import static com.example.sns_project.Util.INTENT_MEDIA;
