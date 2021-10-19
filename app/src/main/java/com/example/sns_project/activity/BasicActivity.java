@@ -1,12 +1,15 @@
 package com.example.sns_project.activity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -34,5 +37,27 @@ public class BasicActivity extends AppCompatActivity {
         if(actionBar != null){
             actionBar.setTitle(title);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.user_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.user_Info:
+                break;
+            case R.id.user_Logout:
+                Intent intent2 = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent2);
+                Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return true;
     }
 }

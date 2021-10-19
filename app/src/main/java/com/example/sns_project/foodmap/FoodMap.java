@@ -18,10 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.TextView;
-<<<<<<< HEAD
-
-=======
->>>>>>> 58c4d46af0415508a654340762c4aa1ff05bd43b
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,10 +56,6 @@ public class FoodMap extends AppCompatActivity {
     private double pressedTime;
     private View alertDialog;
     private TextView tvName, tvAddress, tvPhone, tvUrl;
-<<<<<<< HEAD
-
-=======
->>>>>>> 58c4d46af0415508a654340762c4aa1ff05bd43b
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
     private LocationManager lm;
     private MapView mapView;
