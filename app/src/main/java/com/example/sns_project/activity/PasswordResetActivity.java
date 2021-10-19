@@ -2,6 +2,8 @@ package com.example.sns_project.activity;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -11,14 +13,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import static com.example.sns_project.Util.showToast;
 
-public class PasswordResetActivity extends BasicActivity {
+public class PasswordResetActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_reset);
-        setToolbarTitle("비밀번호 재설정");
+//        setToolbarTitle("비밀번호 재설정");
 
         mAuth = FirebaseAuth.getInstance();
 

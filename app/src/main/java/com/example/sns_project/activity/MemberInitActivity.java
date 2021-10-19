@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,7 @@ import java.io.InputStream;
 import static com.example.sns_project.Util.INTENT_PATH;
 import static com.example.sns_project.Util.showToast;
 
-public class MemberInitActivity extends BasicActivity {
+public class MemberInitActivity extends AppCompatActivity {
     private static final String TAG = "MemberInitActivity";
     private ImageView profileImageVIew;
     private RelativeLayout loaderLayout;
@@ -47,7 +48,7 @@ public class MemberInitActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_init);
-        setToolbarTitle("회원정보");
+//        setToolbarTitle("회원정보");
 
         loaderLayout = findViewById(R.id.loaderLyaout);
         profileImageVIew = findViewById(R.id.profileImageView);
