@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class PostInfo implements Serializable {
     private String category;
+    private String placeName;
+    private String foodCategory;
     private String title;
     private ArrayList<String> contents;
     private ArrayList<String> formats;
@@ -15,8 +17,10 @@ public class PostInfo implements Serializable {
     private Date createdAt;
     private String id;
 
-    public PostInfo(String category, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
+    public PostInfo(String category, String placeName, String foodCategory, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
         this.category = category;
+        this.placeName = placeName;
+        this.foodCategory = foodCategory;
         this.title = title;
         this.contents = contents;
         this.formats = formats;
@@ -26,6 +30,18 @@ public class PostInfo implements Serializable {
 
     public PostInfo(String category, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
         this.category = category;
+        this.title = title;
+        this.contents = contents;
+        this.formats = formats;
+        this.publisher = publisher;
+        this.createdAt = createdAt;
+        this.id = id;
+    }
+
+    public PostInfo(String category, String placeName, String foodCategory, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
+        this.category = category;
+        this.placeName = placeName;
+        this.foodCategory = foodCategory;
         this.title = title;
         this.contents = contents;
         this.formats = formats;
@@ -44,6 +60,8 @@ public class PostInfo implements Serializable {
 
     public Map<String, Object> getPostInfo(){
         Map<String, Object> docData = new HashMap<>();
+        docData.put("placeName", placeName);
+        docData.put("foodCategory", foodCategory);
         docData.put("title",title);
         docData.put("contents",contents);
         docData.put("formats",formats);
@@ -52,6 +70,18 @@ public class PostInfo implements Serializable {
         return  docData;
     }
 
+    public String getPlaceName() {
+        return placeName;
+    }
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+    public String getFoodCategory() {
+        return foodCategory;
+    }
+    public void setFoodCategory(String foodCategory) {
+        this.foodCategory = foodCategory;
+    }
     public String getCategory() {
         return category;
     }

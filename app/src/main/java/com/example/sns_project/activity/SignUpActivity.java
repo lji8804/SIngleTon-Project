@@ -2,14 +2,12 @@ package com.example.sns_project.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
-
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
 import com.example.sns_project.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.sns_project.Util.showToast;
 
-public class SignUpActivity extends BasicActivity implements View.OnClickListener {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private Button signUp;
 
@@ -27,7 +25,7 @@ public class SignUpActivity extends BasicActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        setToolbarTitle("회원가입");
+//        setToolbarTitle("회원가입");
 
         mAuth = FirebaseAuth.getInstance();
 

@@ -102,9 +102,9 @@ public class ReviewFragment extends Fragment {
                 }
             }
         });
+        reviewAdapter.notifyDataSetChanged();
 
         postsUpdate(false);
-
         return view;
     }
 
@@ -128,15 +128,7 @@ public class ReviewFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                /*
-                case R.id.logoutButton:
-                    FirebaseAuth.getInstance().signOut();
-                    myStartActivity(SignUpActivity.class);
-                    break;
-                */
                 case R.id.floatingActionButton:
-//                    Intent intent = new Intent(getActivity(), FoodMap.class);
-//                    startActivity(intent);
                     myStartActivity(WritePostActivity.class);
                     break;
             }
@@ -172,8 +164,7 @@ public class ReviewFragment extends Fragment {
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                postList.add(new PostInfo(
-                                        COLLECTION_PATH,
+                                postList.add(new PostInfo(COLLECTION_PATH,
                                         document.getData().get("title").toString(),
                                         (ArrayList<String>) document.getData().get("contents"),
                                         (ArrayList<String>) document.getData().get("formats"),

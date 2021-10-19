@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.sns_project.R;
 import com.example.sns_project.PostInfo;
@@ -25,14 +26,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
-
 import static com.example.sns_project.Util.GALLERY_IMAGE;
 import static com.example.sns_project.Util.GALLERY_VIDEO;
 import static com.example.sns_project.Util.INTENT_MEDIA;
@@ -45,7 +44,7 @@ import static com.example.sns_project.Util.storageUrlToName;
 
 public class WritePostActivity extends BasicActivity {
     private static final String TAG = "WritePostActivity";
-    private String collectionPath;
+    private String collectionPath, placeName, foodCategory;
     private FirebaseUser user;
     private StorageReference storageRef;
     private ArrayList<String> pathList = new ArrayList<>();
@@ -56,6 +55,7 @@ public class WritePostActivity extends BasicActivity {
     private EditText selectedEditText;
     private EditText contentsEditText;
     private EditText titleEditText;
+    private TextView tvFoodCategory, tvPlaceName;
     private PostInfo postInfo;
     private int pathCount, successCount;
 
@@ -70,6 +70,8 @@ public class WritePostActivity extends BasicActivity {
         loaderLayout = findViewById(R.id.loaderLyaout);
         contentsEditText = findViewById(R.id.contentsEditText);
         titleEditText = findViewById(R.id.titleEditText);
+        tvPlaceName = findViewById(R.id.tv_place_name);
+        tvFoodCategory = findViewById(R.id.tv_food_category);
 
         findViewById(R.id.check).setOnClickListener(onClickListener);
         findViewById(R.id.image).setOnClickListener(onClickListener);
@@ -94,6 +96,10 @@ public class WritePostActivity extends BasicActivity {
 
         postInfo = (PostInfo) getIntent().getSerializableExtra("postInfo");
         collectionPath = getIntent().getStringExtra("collectionPath");
+        placeName = getIntent().getStringExtra("placeName");
+        foodCategory = getIntent().getStringExtra("foodCategory");
+        tvPlaceName.setText(placeName);
+        tvFoodCategory.setText(foodCategory);
         postInit();
     }
 
@@ -171,7 +177,7 @@ public class WritePostActivity extends BasicActivity {
                     final View selectedView = (View) selectedImageVIew.getParent();
                     String path = pathList.get(parent.indexOfChild(selectedView) - 1);
                     if(isStorageUrl(path)){
-                        StorageReference desertRef = storageRef.child("posts/" + postInfo.getId() + "/" + storageUrlToName(path));
+                        StorageReference desertRef = storageRef.child(collectionPath + "/" + postInfo.getId() + "/" + storageUrlToName(path));
                         desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -243,7 +249,7 @@ public class WritePostActivity extends BasicActivity {
                             formatList.add("text");
                         }
                         String[] pathArray = path.split("\\.");
-                        final StorageReference mountainImagesRef = storageRef.child("posts/" + documentReference.getId() + "/" + pathCount + "." + pathArray[pathArray.length - 1]);
+                        final StorageReference mountainImagesRef = storageRef.child(collectionPath + "/" + documentReference.getId() + "/" + pathCount + "." + pathArray[pathArray.length - 1]);
                         try {
                             InputStream stream = new FileInputStream(new File(pathList.get(pathCount)));
                             StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("index", "" + (contentsList.size() - 1)).build();
@@ -262,7 +268,7 @@ public class WritePostActivity extends BasicActivity {
                                             successCount--;
                                             contentsList.set(index, uri.toString());
                                             if (successCount == 0) {
-                                                PostInfo postInfo = new PostInfo(collectionPath, title, contentsList, formatList, user.getUid(), date);
+                                                PostInfo postInfo = new PostInfo(collectionPath, placeName, foodCategory, title, contentsList, formatList, user.getUid(), date);
                                                 storeUpload(documentReference, postInfo);
                                             }
                                         }
@@ -277,7 +283,7 @@ public class WritePostActivity extends BasicActivity {
                 }
             }
             if (successCount == 0) {
-                storeUpload(documentReference, new PostInfo(collectionPath, title, contentsList, formatList, user.getUid(), date));
+                storeUpload(documentReference, new PostInfo(collectionPath, placeName, foodCategory, title, contentsList, formatList, user.getUid(), date));
             }
         } else {
             showToast(WritePostActivity.this, "제목을 입력해주세요.");
@@ -285,6 +291,7 @@ public class WritePostActivity extends BasicActivity {
     }
 
     private void storeUpload(DocumentReference documentReference, final PostInfo postInfo) {
+        // db에 추가
         documentReference.set(postInfo.getPostInfo())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

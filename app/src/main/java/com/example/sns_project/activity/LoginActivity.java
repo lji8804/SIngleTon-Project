@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Base64;
 import android.util.Log;
@@ -25,7 +26,7 @@ import static com.example.sns_project.Util.showToast;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class LoginActivity extends BasicActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private Button btnLogin, btnResetPassword, btnGoToRegister;
 
@@ -33,7 +34,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setToolbarTitle("로그인");
+//        setToolbarTitle("로그인");
 
         mAuth = FirebaseAuth.getInstance();
 

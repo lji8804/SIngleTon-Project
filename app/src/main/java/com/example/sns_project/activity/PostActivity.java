@@ -6,17 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 import com.example.sns_project.FirebaseHelper;
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
 import com.example.sns_project.listener.OnPostListener;
-import com.example.sns_project.view.ContentsItemView;
 import com.example.sns_project.view.ReadContentsVIew;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,9 +21,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import static com.example.sns_project.Util.INTENT_PATH;
-
 import androidx.annotation.NonNull;
 
 public class PostActivity extends BasicActivity {
@@ -115,7 +107,7 @@ public class PostActivity extends BasicActivity {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();;
         user = FirebaseAuth.getInstance().getCurrentUser();
         String currentUid = user.getUid();
-        CollectionReference collectionReference = firebaseFirestore.collection("posts");
+        CollectionReference collectionReference = firebaseFirestore.collection(postInfo.getCategory());
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
