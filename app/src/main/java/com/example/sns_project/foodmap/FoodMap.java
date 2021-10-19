@@ -346,7 +346,6 @@ public class FoodMap extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
     @Override
     public void onBackPressed() {
         if (pressedTime == 0) {
@@ -365,12 +364,10 @@ public class FoodMap extends AppCompatActivity {
             }
         }
     }
-}
-=======
+    
     private void myStartActivity(Class c) {
         Intent intent = new Intent(this, c);
         intent.putExtra("collectionPath", COLLECTION_PATH);
         startActivityForResult(intent, 0);
     }
 }
->>>>>>> 023ac87bd53eb74d5a15926a29506e9c84309d84
