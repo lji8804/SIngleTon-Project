@@ -14,19 +14,35 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.sns_project.FirebaseHelper;
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
+import com.example.sns_project.UserInfo;
 import com.example.sns_project.activity.PostActivity;
 import com.example.sns_project.activity.WritePostActivity;
 import com.example.sns_project.listener.OnPostListener;
 import com.example.sns_project.view.ReadContentsVIew;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder> {
     private ArrayList<PostInfo> mDataset;
@@ -34,6 +50,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
     private FirebaseHelper firebaseHelper;
     private ArrayList<ArrayList<SimpleExoPlayer>> playerArrayListArrayList = new ArrayList<>();
     private final int MORE_INDEX = 2;
+    private ImageView ivProfile;
+    TextView tvTitle, tvID, tvGotoURL;
+    private ArrayList<String> userInfoArrayList = new ArrayList<>();
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -78,28 +97,58 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         CardView cardView = holder.cardView;
-        TextView titleTextView = cardView.findViewById(R.id.titleTextView);
-        TextView tvCategory = cardView.findViewById(R.id.tv_category);
+        ivProfile = cardView.findViewById(R.id.iv_profile);
+        tvTitle = cardView.findViewById(R.id.tv_title);
+        tvID = cardView.findViewById(R.id.tv_id);
+        tvGotoURL = cardView.findViewById(R.id.tv_gotoURL);
 
         PostInfo postInfo = mDataset.get(position);
-        titleTextView.setText(postInfo.getTitle());
-        tvCategory.setText(postInfo.getPlaceName());
+        getUserInfo(position);
+        tvTitle.setText(postInfo.getTitle());
+        tvGotoURL.setText(postInfo.getPlaceName());
 
-        ReadContentsVIew readContentsVIew = cardView.findViewById(R.id.readContentsView);
-        LinearLayout contentsLayout = cardView.findViewById(R.id.contentsLayout);
 
-        if (contentsLayout.getTag() == null || !contentsLayout.getTag().equals(postInfo)) {
-            contentsLayout.setTag(postInfo);
-            contentsLayout.removeAllViews();
+//        ReadContentsVIew readContentsVIew = cardView.findViewById(R.id.readContentsView);
+//        LinearLayout contentsLayout = cardView.findViewById(R.id.contentsLayout);
+//
+//        if (contentsLayout.getTag() == null || !contentsLayout.getTag().equals(postInfo)) {
+//            contentsLayout.setTag(postInfo);
+//            contentsLayout.removeAllViews();
+//
+//            readContentsVIew.setMoreIndex(MORE_INDEX);
+//            readContentsVIew.setPostInfo(postInfo);
+//
+//            ArrayList<SimpleExoPlayer> playerArrayList = readContentsVIew.getPlayerArrayList();
+//            if(playerArrayList != null){
+//                playerArrayListArrayList.add(playerArrayList);
+//            }
+//        }
+    }
 
-            readContentsVIew.setMoreIndex(MORE_INDEX);
-            readContentsVIew.setPostInfo(postInfo);
+    private void getUserInfo(int position) {
 
-            ArrayList<SimpleExoPlayer> playerArrayList = readContentsVIew.getPlayerArrayList();
-            if(playerArrayList != null){
-                playerArrayListArrayList.add(playerArrayList);
+        DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(mDataset.get(position).getPublisher());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        if (document.exists()) {
+                            Log.d("가져오기", "DocumentSnapshot data: " + document.getData());
+                            if(document.getData().get("photoUrl") != null){
+                                Glide.with(ivProfile.getContext()).load(document.getData().get("photoUrl")).centerCrop().override(500).into(ivProfile);
+                            }
+                            tvID.setText(document.getData().get("name").toString());
+                        } else {
+                            Log.d("가져오기", "No such document");
+                        }
+                    }
+                } else {
+                    Log.d("가져오기", "get failed with ", task.getException());
+                }
             }
-        }
+        });
     }
 
     @Override

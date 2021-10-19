@@ -2,9 +2,11 @@ package com.example.sns_project.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.sns_project.FirebaseHelper;
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
@@ -19,6 +22,12 @@ import com.example.sns_project.activity.PostActivity;
 import com.example.sns_project.listener.OnPostListener;
 import com.example.sns_project.view.ReadContentsVIew;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -28,6 +37,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
     private FirebaseHelper firebaseHelper;
     private ArrayList<ArrayList<SimpleExoPlayer>> playerArrayListArrayList = new ArrayList<>();
     private final int MORE_INDEX = 2;
+    private ImageView ivProfile;
+    TextView tvTitle, tvID, tvGotoURL;
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -72,26 +83,55 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         CardView cardView = holder.cardView;
-        TextView titleTextView = cardView.findViewById(R.id.titleTextView);
+        ivProfile = cardView.findViewById(R.id.iv_profile);
+        tvTitle = cardView.findViewById(R.id.tv_title);
+        tvID = cardView.findViewById(R.id.tv_id);
+        tvGotoURL = cardView.findViewById(R.id.tv_gotoURL);
 
         PostInfo postInfo = mDataset.get(position);
-        titleTextView.setText(postInfo.getTitle());
+        tvTitle.setText(postInfo.getTitle());
+        tvGotoURL.setText(postInfo.getPlaceName());
 
-        ReadContentsVIew readContentsVIew = cardView.findViewById(R.id.readContentsView);
-        LinearLayout contentsLayout = cardView.findViewById(R.id.contentsLayout);
+        getUserInfo();
 
-        if (contentsLayout.getTag() == null || !contentsLayout.getTag().equals(postInfo)) {
-            contentsLayout.setTag(postInfo);
-            contentsLayout.removeAllViews();
+//        ReadContentsVIew readContentsVIew = cardView.findViewById(R.id.readContentsView);
+//        LinearLayout contentsLayout = cardView.findViewById(R.id.contentsLayout);
+//
+//        if (contentsLayout.getTag() == null || !contentsLayout.getTag().equals(postInfo)) {
+//            contentsLayout.setTag(postInfo);
+//            contentsLayout.removeAllViews();
+//
+//            readContentsVIew.setMoreIndex(MORE_INDEX);
+//            readContentsVIew.setPostInfo(postInfo);
+//
+//            ArrayList<SimpleExoPlayer> playerArrayList = readContentsVIew.getPlayerArrayList();
+//            if(playerArrayList != null){
+//                playerArrayListArrayList.add(playerArrayList);
+//            }
+//        }
+    }
 
-            readContentsVIew.setMoreIndex(MORE_INDEX);
-            readContentsVIew.setPostInfo(postInfo);
+    private void getUserInfo() {
+        DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document();
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        if (document.exists()) {
+                            if(document.getData().get("photoUrl") != null){
+                                Glide.with(ivProfile.getContext()).load(document.getData().get("photoUrl")).centerCrop().override(500).into(ivProfile);
+                            }
+                            tvID.setText(document.getData().get("name").toString());
+                        } else {
 
-            ArrayList<SimpleExoPlayer> playerArrayList = readContentsVIew.getPlayerArrayList();
-            if(playerArrayList != null){
-                playerArrayListArrayList.add(playerArrayList);
+                        }
+                    }
+                } else {
+                }
             }
-        }
+        });
     }
 
     @Override
