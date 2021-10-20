@@ -9,6 +9,7 @@ import java.util.Map;
 public class PostInfo implements Serializable {
     private String category;
     private String placeName;
+    private String placeUrl;
     private String foodCategory;
     private String title;
     private ArrayList<String> contents;
@@ -17,9 +18,10 @@ public class PostInfo implements Serializable {
     private Date createdAt;
     private String id;
 
-    public PostInfo(String category, String placeName, String foodCategory, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
+    public PostInfo(String category, String placeName, String placeUrl, String foodCategory,  String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
         this.category = category;
         this.placeName = placeName;
+        this.placeUrl = placeUrl;
         this.foodCategory = foodCategory;
         this.title = title;
         this.contents = contents;
@@ -38,9 +40,10 @@ public class PostInfo implements Serializable {
         this.id = id;
     }
 
-    public PostInfo(String category, String placeName, String foodCategory, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
+    public PostInfo(String category, String placeName, String placeUrl, String foodCategory, String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt, String id){
         this.category = category;
         this.placeName = placeName;
+        this.placeUrl = placeUrl;
         this.foodCategory = foodCategory;
         this.title = title;
         this.contents = contents;
@@ -50,18 +53,11 @@ public class PostInfo implements Serializable {
         this.id = id;
     }
 
-//    public PostInfo(String title, ArrayList<String> contents, ArrayList<String> formats, String publisher, Date createdAt){
-//        this.title = title;
-//        this.contents = contents;
-//        this.formats = formats;
-//        this.publisher = publisher;
-//        this.createdAt = createdAt;
-//    }
-
     public Map<String, Object> getPostInfo(){
         Map<String, Object> docData = new HashMap<>();
         docData.put("placeName", placeName);
         docData.put("foodCategory", foodCategory);
+        docData.put("placeUrl", placeUrl);
         docData.put("title",title);
         docData.put("contents",contents);
         docData.put("formats",formats);
@@ -70,6 +66,12 @@ public class PostInfo implements Serializable {
         return  docData;
     }
 
+    public String getPlaceUrl() {
+        return placeUrl;
+    }
+    public void setPlaceUrl(String placeUrl) {
+        this.placeUrl = placeUrl;
+    }
     public String getPlaceName() {
         return placeName;
     }

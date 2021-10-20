@@ -172,6 +172,7 @@ public class HomeFragment extends Fragment {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 postList.add(new PostInfo(COLLECTION_PATH,
                                         document.getData().get("placeName").toString(),
+                                        document.getData().get("placeUrl").toString(),
                                         document.getData().get("foodCategory").toString(),
                                         document.getData().get("title").toString(),
                                         (ArrayList<String>) document.getData().get("contents"),

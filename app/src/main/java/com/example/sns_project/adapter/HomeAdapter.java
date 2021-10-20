@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -103,6 +104,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
         tvTitle = cardView.findViewById(R.id.tv_title);
         tvID = cardView.findViewById(R.id.tv_id);
         tvGotoURL = cardView.findViewById(R.id.tv_gotoURL);
+        final String url = mDataset.get(position).getPlaceUrl();
+
+//        tvGotoURL.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                activity.startActivity(intent);
+//            }
+//        });
 
         PostInfo postInfo = mDataset.get(position);
         getUserInfo(position);
@@ -112,32 +122,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
         for (UserInfo userInfo: userDataset) {
             if(postInfo.getPublisher().equals(userInfo.getUid())){
                 tvID.setText(userInfo.getName());
-                Glide.with(ivProfile.getContext()).load(userInfo.getPhotoUrl()).into(ivProfile);
+                Glide.with(ivProfile.getContext()).load(userInfo.getPhotoUrl()).circleCrop().into(ivProfile);
             }
         }
-
-
-//        ReadContentsVIew readContentsVIew = cardView.findViewById(R.id.readContentsView);
-//        LinearLayout contentsLayout = cardView.findViewById(R.id.contentsLayout);
-//
-//        if (contentsLayout.getTag() == null || !contentsLayout.getTag().equals(postInfo)) {
-//            contentsLayout.setTag(postInfo);
-//            contentsLayout.removeAllViews();
-//
-//            readContentsVIew.setMoreIndex(MORE_INDEX);
-//            readContentsVIew.setPostInfo(postInfo);
-//
-//            ArrayList<SimpleExoPlayer> playerArrayList = readContentsVIew.getPlayerArrayList();
-//            if(playerArrayList != null){
-//                playerArrayListArrayList.add(playerArrayList);
-//            }
-//        }
     }
 
-    private void getUserInfo(int position) {
-
-
-    }
+    private void getUserInfo(int position) { }
 
     @Override
     public int getItemCount() {

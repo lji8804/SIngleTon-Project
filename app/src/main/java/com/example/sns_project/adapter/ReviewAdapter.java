@@ -100,7 +100,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
         for (UserInfo userInfo: userDataset) {
             if(postInfo.getPublisher().equals(userInfo.getUid())){
                 tvID.setText(userInfo.getName());
-                Glide.with(ivProfile.getContext()).load(userInfo.getPhotoUrl()).into(ivProfile);
+                Glide.with(ivProfile.getContext()).load(userInfo.getPhotoUrl()).circleCrop().into(ivProfile);
             }
         }
 

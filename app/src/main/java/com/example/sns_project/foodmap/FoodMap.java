@@ -67,7 +67,7 @@ public class FoodMap extends AppCompatActivity  {
     private MarkerClickListener markerClickListener = new MarkerClickListener();
     private CustomBalloonAdapter customBalloonAdapter;
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
-    private String foodCategory, placeName;
+    private String foodCategory, placeName, placeUrl;
     private MapPOIItem[] markerList = new MapPOIItem[]{};
 
 
@@ -327,6 +327,7 @@ public class FoodMap extends AppCompatActivity  {
 
             placeName = tvName.getText().toString();
             foodCategory = tvAddress.getText().toString();
+            placeUrl = tvUrl.getText().toString();
 
             new AlertDialog.Builder(FoodMap.this)
                     .setTitle(foodDataList.get(mapPOIItem.getTag()).getName())
@@ -372,6 +373,7 @@ public class FoodMap extends AppCompatActivity  {
         intent.putExtra("collectionPath", COLLECTION_PATH);
         intent.putExtra("placeName", placeName);
         intent.putExtra("foodCategory", foodCategory);
+        intent.putExtra("placeUrl", placeUrl);
         startActivityForResult(intent, 0);
     }
 }
