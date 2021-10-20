@@ -20,10 +20,34 @@
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/drawable/gradient2.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/drawable/gradient3.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/drawable/main_gradient.xml" value="0.26979166666666665" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_camera.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_gallery.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_login.xml" value="0.24351851851851852" />
-        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_password_reset.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_post.xml" value="0.264" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_sign_up.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_user_init.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_write_post.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/activity_write_review.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/ballon.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/dialog_map.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/fragment_camera2_basic.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/fragment_home.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/fragment_review.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/fragment_user_info.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/fragment_user_list.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/item_gallery.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/item_post.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/item_user_list.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/loading_view.xml" value="0.24974358974358973" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/map_view.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/view_contents_edit_text.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/view_contents_image.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/view_contents_player.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/view_contents_text.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/view_loader.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/view_post.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/layout/view_toolbar.xml" value="0.24351851851851852" />
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/menu/bottom_navigation.xml" value="0.20729166666666668" />
         <entry key="..\:/Users/leee/AndroidStudioProjects/SIngleTon-Project/app/src/main/res/menu/user_menu.xml" value="0.2388888888888889" />
