@@ -29,7 +29,8 @@
                 android:id="@+id/btn_kakaoplace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="더 많은 정보"/>
+                android:text="더 많은 정보"
+                android:textStyle="bold"/>
         </LinearLayout>
     </ScrollView>
 

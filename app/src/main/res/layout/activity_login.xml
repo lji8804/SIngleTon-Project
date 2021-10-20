@@ -52,19 +52,22 @@
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="로그인" />
+                android:text="로그인"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/gotoPasswordResetButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="비밀번호 재설정" />
+                android:text="비밀번호 재설정"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/gotoRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="회원가입" />
+                android:text="회원가입"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 

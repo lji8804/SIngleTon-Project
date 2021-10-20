@@ -26,14 +26,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="카테고리 들어갈 자리"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tv_place_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="음식점 이름"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:textStyle="bold"/>
 
             <EditText
                 android:id="@+id/titleEditText"
@@ -69,25 +71,28 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="이미지" />
-
-                <Button
                     android:id="@+id/video"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="비디오" />
+                    android:text="비디오"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
+
+            <Button
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="이미지"
+                android:textStyle="bold"/>
             <Button
                 android:id="@+id/check"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="확인" />
+                android:text="확인"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -120,19 +125,22 @@
                     android:id="@+id/imageModify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="이미지 수정" />
+                    android:text="이미지 수정"
+                    android:textStyle="bold"/>
 
                 <Button
                     android:id="@+id/videoModify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="비디오 수정" />
+                    android:text="비디오 수정"
+                    android:textStyle="bold"/>
 
                 <Button
                     android:id="@+id/delete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="삭제" />
+                    android:text="삭제"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
