@@ -139,8 +139,7 @@ public class MemberInitActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()) {
                                 Uri downloadUri = task.getResult();
-
-                                UserInfo userInfo = new UserInfo(name, phoneNumber, birthDay, address, downloadUri.toString());
+                                UserInfo userInfo = new UserInfo(user.getUid(), name, phoneNumber, birthDay, address, downloadUri.toString());
                                 storeUploader(userInfo);
                             } else {
                                 showToast(MemberInitActivity.this, "회원정보를 보내는데 실패하였습니다.");

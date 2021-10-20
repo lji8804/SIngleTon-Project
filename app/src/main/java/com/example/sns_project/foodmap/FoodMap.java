@@ -12,29 +12,30 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.sns_project.BuildConfig;
 import com.example.sns_project.KakaoLocal.Data;
 import com.example.sns_project.R;
 import com.example.sns_project.activity.WritePostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+
 import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
+
 import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,7 +67,7 @@ public class FoodMap extends AppCompatActivity  {
     private MarkerClickListener markerClickListener = new MarkerClickListener();
     private CustomBalloonAdapter customBalloonAdapter;
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
-    private String foodCategory, placeName;
+    private String foodCategory, placeName, placeUrl;
     private MapPOIItem[] markerList = new MapPOIItem[]{};
 
 
@@ -210,12 +211,12 @@ public class FoodMap extends AppCompatActivity  {
         foodDataList.clear();
         String address = edtSearch.getText().toString();
         ApiService api = retrofit.create(ApiService.class);
-        api.getAddress(ApiService.ApiKey, address , String.valueOf(lng), String.valueOf(lat), 2000)
+        api.getAddress(ApiService.ApiKey, address, String.valueOf(lng), String.valueOf(lat), 20000)
                 .enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(Call<Data> call, Response<Data> response) {
                         if (response.body() != null) {
-                            if(response.body().getMeta().getPageableCount() >= 15){
+                            if (response.body().getMeta().getPageableCount() >= 15) {
                                 response.body().getMeta().setPageableCount(15);
                             }
                             Log.d("메인", response.body().toString());
@@ -225,7 +226,7 @@ public class FoodMap extends AppCompatActivity  {
                                 dataArrayList.add(response.body());
 //                                Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
                             }
-                            for (int i = 0; i < dataArrayList.size()-1; i++) {
+                            for (int i = 0; i < dataArrayList.size() - 1; i++) {
                                 String[] colum = {
                                         dataArrayList.get(i).getDocuments().get(i).getPlaceName(),
                                         dataArrayList.get(i).getDocuments().get(i).getCategoryName(),
@@ -236,7 +237,7 @@ public class FoodMap extends AppCompatActivity  {
                                         dataArrayList.get(i).getDocuments().get(i).getPlaceUrl()
                                 };
                                 FoodData foodData = new FoodData(
-                                        colum[0],colum[1],colum[2],colum[3],colum[4],colum[5],colum[6]
+                                        colum[0], colum[1], colum[2], colum[3], colum[4], colum[5], colum[6]
                                 );
                                 foodDataList.add(foodData);
                             }
@@ -257,7 +258,7 @@ public class FoodMap extends AppCompatActivity  {
 
     private interface ApiService {
         String baseUrl = "https://dapi.kakao.com/";
-//        String ApiKey = BuildConfig.KAKAO_API_KEY;
+        //        String ApiKey = BuildConfig.KAKAO_API_KEY;
         String ApiKey = "KakaoAK 105421c1ffe84bf639305ce045c11e92";
 
         @GET("v2/local/search/keyword.json?page=1&size=15&sort=distance")
@@ -268,10 +269,12 @@ public class FoodMap extends AppCompatActivity  {
                               @Query("radius") Integer rad);
     }
 
-    class CustomBalloonAdapter implements CalloutBalloonAdapter{
-        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);;
+    class CustomBalloonAdapter implements CalloutBalloonAdapter {
+        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);
+        ;
         TextView tvName = mCalloutBalloon.findViewById(R.id.ball_tv_name);
         TextView tvAddress = mCalloutBalloon.findViewById(R.id.ball_tv_address);
+
         public CustomBalloonAdapter() {
 
         }
@@ -291,7 +294,7 @@ public class FoodMap extends AppCompatActivity  {
 
     }
 
-    class MarkerClickListener implements MapView.POIItemEventListener{
+    class MarkerClickListener implements MapView.POIItemEventListener {
 
         @Override
         public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
@@ -324,6 +327,7 @@ public class FoodMap extends AppCompatActivity  {
 
             placeName = tvName.getText().toString();
             foodCategory = tvAddress.getText().toString();
+            placeUrl = tvUrl.getText().toString();
 
             new AlertDialog.Builder(FoodMap.this)
                     .setTitle(foodDataList.get(mapPOIItem.getTag()).getName())
@@ -369,6 +373,7 @@ public class FoodMap extends AppCompatActivity  {
         intent.putExtra("collectionPath", COLLECTION_PATH);
         intent.putExtra("placeName", placeName);
         intent.putExtra("foodCategory", foodCategory);
+        intent.putExtra("placeUrl", placeUrl);
         startActivityForResult(intent, 0);
     }
 }

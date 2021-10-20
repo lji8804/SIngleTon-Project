@@ -20,11 +20,16 @@
             android:padding="10dp">
 
             <com.example.sns_project.view.ReadContentsVIew
+                android:id="@+id/readContentsView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.example.sns_project.view.ReadContentsVIew>
+
+            <Button
+                android:id="@+id/btn_kakaoplace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/readContentsView">
-
-            </com.example.sns_project.view.ReadContentsVIew>
+                android:text="더 많은 정보"/>
         </LinearLayout>
     </ScrollView>
 

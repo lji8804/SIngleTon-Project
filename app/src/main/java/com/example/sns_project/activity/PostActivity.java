@@ -2,10 +2,13 @@ package com.example.sns_project.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.example.sns_project.FirebaseHelper;
@@ -28,6 +31,7 @@ public class PostActivity extends BasicActivity {
     private FirebaseHelper firebaseHelper;
     private ReadContentsVIew readContentsVIew;
     private LinearLayout contentsLayout;
+    private Button btnKakaoplace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,16 @@ public class PostActivity extends BasicActivity {
         postInfo = (PostInfo) getIntent().getSerializableExtra("postInfo");
         contentsLayout = findViewById(R.id.contentsLayout);
         readContentsVIew = findViewById(R.id.readContentsView);
+        btnKakaoplace = findViewById(R.id.btn_kakaoplace);
+        final String url = postInfo.getPlaceUrl();
+
+        btnKakaoplace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+            }
+        });
 
         firebaseHelper = new FirebaseHelper(this);
         firebaseHelper.setOnPostListener(onPostListener);
