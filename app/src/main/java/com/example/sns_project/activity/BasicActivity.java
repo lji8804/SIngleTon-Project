@@ -12,11 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class BasicActivity extends AppCompatActivity {
     @Override
@@ -50,6 +52,9 @@ public class BasicActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         switch (item.getItemId()){
             case R.id.user_Info:
+                Intent intent = new Intent(this, MemberInitActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.user_Logout:
                 FirebaseAuth.getInstance().signOut();

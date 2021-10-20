@@ -89,7 +89,6 @@ public class MainActivity extends BasicActivity {
                     .commit();
 
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-            bottomNavigationView.setItemIconTintList(null);
             bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
