@@ -67,11 +67,14 @@ public class BasicActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.user_delete:
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
+                       if (task.isSuccessful()){
+                           Intent intent = new Intent(BasicActivity.this, LoginActivity.class);
+                           startActivity(intent);
+                           finish();
+                       }
                     }
                 });
         }
