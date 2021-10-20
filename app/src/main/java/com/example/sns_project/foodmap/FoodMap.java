@@ -12,28 +12,33 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.sns_project.BuildConfig;
 import com.example.sns_project.KakaoLocal.Data;
+import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
 import com.example.sns_project.activity.WritePostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+
 import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
+
 import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,28 +49,22 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public class FoodMap extends AppCompatActivity {
-    private final String COLLECTION_PATH = "posts";
-    // activity
-    private ImageButton ibBtnSearch,ibBtnLocation;
-    private EditText edtSearch;
-    private MapView mapView;
-
-    //GPS
     private double lat;
     private double lng;
-    private boolean isGPS;
-    private LocationManager lm;
-    private FusedLocationProviderClient fusedLocationClient;
-
-    // dialog
+    private ImageButton ibBtnSearch,ibBtnLocation;
+    private EditText edtSearch;
+    private double pressedTime;
     private View alertDialog;
     private TextView tvName, tvAddress, tvPhone, tvUrl;
-
+    private ArrayList<FoodData> foodDataList = new ArrayList<>();
+    private LocationManager lm;
+    private MapView mapView;
+    private FusedLocationProviderClient fusedLocationClient;
+    private boolean isGPS ;
     private MarkerClickListener markerClickListener = new MarkerClickListener();
     private CustomBalloonAdapter customBalloonAdapter;
-    private ArrayList<FoodData> foodDataList = new ArrayList<>();
+    private final String COLLECTION_PATH = "posts";
     private String foodCategory, placeName;
-    private double pressedTime;
 
     MutableLiveData<Data> kakao = new MutableLiveData<>();
     ArrayList<Data> dataArrayList = new ArrayList<>();
@@ -89,11 +88,19 @@ public class FoodMap extends AppCompatActivity {
         // 네트워크 프로바이더 사용가능여부
         final boolean isNetworkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
+        // 수동으로 위치 구하기
+//        getCurrentLocation();
+        
         //초기화면설정
         init();
 
         //리스너설정
         onClickListener();
+
+//        String url = "kakaomap://search?q=맛집&p=" + lm;
+//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//        Log.d("인텐트",intent.toString());
+//        startActivity(intent);
     }
 
     private void onClickListener() {
@@ -206,7 +213,7 @@ public class FoodMap extends AppCompatActivity {
         foodDataList.clear();
         String address = edtSearch.getText().toString();
         ApiService api = retrofit.create(ApiService.class);
-        api.getAddress(ApiService.ApiKey, address , String.valueOf(lng), String.valueOf(lat), 2000)
+        api.getAddress(ApiService.ApiKey, "%" + address + "%", String.valueOf(lng), String.valueOf(lat), 2000)
                 .enqueue(new Callback<Data>() {
                     @Override
                     public void onResponse(Call<Data> call, Response<Data> response) {
@@ -248,12 +255,18 @@ public class FoodMap extends AppCompatActivity {
                         Log.d("kakao", "실패");
                     }
                 });
+
+//        kakao.observe(this, new Observer<Data>() {
+//            @Override
+//            public void onChanged(Data data) {
+////               Log.i("메인", data.documentsList.get(0).getAddress_name());
+//            }
+//        });
     }
 
 
     private interface ApiService {
         String baseUrl = "https://dapi.kakao.com/";
-//        String ApiKey = BuildConfig.KAKAO_API_KEY;
         String ApiKey = "KakaoAK 105421c1ffe84bf639305ce045c11e92";
 
         @GET("v2/local/search/keyword.json?page=1&size=15&sort=distance")
@@ -311,12 +324,6 @@ public class FoodMap extends AppCompatActivity {
             tvAddress.setText(foodDataList.get(mapPOIItem.getTag()).getCategoryName());
             tvPhone.setText(foodDataList.get(mapPOIItem.getTag()).getRoadAddressName());
             tvUrl.setText(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
-            tvUrl.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
 
             placeName = tvName.getText().toString();
             foodCategory = tvAddress.getText().toString();
