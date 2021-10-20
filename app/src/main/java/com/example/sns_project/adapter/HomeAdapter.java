@@ -46,6 +46,7 @@ import java.util.Date;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder> {
     private ArrayList<PostInfo> mDataset;
+    private ArrayList<UserInfo> userDataset;
     private Activity activity;
     private FirebaseHelper firebaseHelper;
     private ArrayList<ArrayList<SimpleExoPlayer>> playerArrayListArrayList = new ArrayList<>();
@@ -62,9 +63,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
         }
     }
 
-    public HomeAdapter(Activity activity, ArrayList<PostInfo> myDataset) {
-        this.mDataset = myDataset;
+    public HomeAdapter(Activity activity, ArrayList<PostInfo> myDataset, ArrayList<UserInfo> userDataset) {
         this.activity = activity;
+        this.mDataset = myDataset;
+        this.userDataset = userDataset;
         firebaseHelper = new FirebaseHelper(activity);
     }
 
@@ -106,6 +108,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
         getUserInfo(position);
         tvTitle.setText(postInfo.getTitle());
         tvGotoURL.setText(postInfo.getPlaceName());
+
+        for (UserInfo userInfo: userDataset) {
+            if(postInfo.getPublisher().equals(userInfo.getUid())){
+                tvID.setText(userInfo.getName());
+                Glide.with(ivProfile.getContext()).load(userInfo.getPhotoUrl()).into(ivProfile);
+            }
+        }
 
 
 //        ReadContentsVIew readContentsVIew = cardView.findViewById(R.id.readContentsView);
