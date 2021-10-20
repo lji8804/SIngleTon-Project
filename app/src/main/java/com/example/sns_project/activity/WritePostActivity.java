@@ -99,7 +99,6 @@ public class WritePostActivity extends BasicActivity {
         placeName = getIntent().getStringExtra("placeName");
         foodCategory = getIntent().getStringExtra("foodCategory");
         placeUrl = getIntent().getStringExtra("placeUrl");
-        Log.d("겟인텐트", placeUrl);
         tvPlaceName.setText(placeName);
         tvFoodCategory.setText(foodCategory);
         postInit();

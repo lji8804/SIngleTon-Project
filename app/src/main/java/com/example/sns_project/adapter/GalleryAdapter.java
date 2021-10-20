@@ -2,7 +2,6 @@ package com.example.sns_project.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,12 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.example.sns_project.R;
-
 import java.util.ArrayList;
-
 import static com.example.sns_project.Util.INTENT_PATH;
 
 public class GalleryAdapter  extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {

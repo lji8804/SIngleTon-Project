@@ -6,13 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.bumptech.glide.Glide;
 import com.example.sns_project.UserInfo;
 import com.example.sns_project.R;
@@ -27,12 +25,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
 import static com.example.sns_project.Util.INTENT_PATH;
 import static com.example.sns_project.Util.showToast;
 
@@ -48,7 +44,6 @@ public class MemberInitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_init);
-//        setToolbarTitle("회원정보");
 
         loaderLayout = findViewById(R.id.loaderLyaout);
         profileImageVIew = findViewById(R.id.profileImageView);

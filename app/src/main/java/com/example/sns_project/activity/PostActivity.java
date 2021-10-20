@@ -52,6 +52,10 @@ public class PostActivity extends BasicActivity {
             }
         });
 
+        if(postInfo.getCategory().equals("reviews")){
+            btnKakaoplace.setVisibility(View.GONE);
+        }
+
         firebaseHelper = new FirebaseHelper(this);
         firebaseHelper.setOnPostListener(onPostListener);
         uiUpdate();

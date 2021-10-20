@@ -2,48 +2,23 @@ package com.example.sns_project.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.sns_project.FirebaseHelper;
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
 import com.example.sns_project.UserInfo;
 import com.example.sns_project.activity.PostActivity;
-import com.example.sns_project.activity.WritePostActivity;
 import com.example.sns_project.listener.OnPostListener;
-import com.example.sns_project.view.ReadContentsVIew;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder> {
     private ArrayList<PostInfo> mDataset;
@@ -105,14 +80,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MainViewHolder
         tvID = cardView.findViewById(R.id.tv_id);
         tvGotoURL = cardView.findViewById(R.id.tv_gotoURL);
         final String url = mDataset.get(position).getPlaceUrl();
-
-//        tvGotoURL.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                activity.startActivity(intent);
-//            }
-//        });
 
         PostInfo postInfo = mDataset.get(position);
         getUserInfo(position);
