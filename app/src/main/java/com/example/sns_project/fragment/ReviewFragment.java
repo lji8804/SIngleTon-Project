@@ -204,7 +204,7 @@ public class ReviewFragment extends Fragment {
                                     document.getData().get("phoneNumber").toString(),
                                     document.getData().get("birthDay").toString(),
                                     document.getData().get("address").toString(),
-                                    null));
+                                    document.getString("photoUrl")));
                     }
                     reviewAdapter.notifyDataSetChanged();
                     Log.d("가져오기", "끝");
