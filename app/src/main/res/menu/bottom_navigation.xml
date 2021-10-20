@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="홈" />
+        android:icon="@drawable/home"
+        android:title="Home" />
     <item
         android:id="@+id/myInfo"
-        android:icon="@drawable/ic_account_circle_black_24dp"
-        android:title="내 정보" />
+        android:icon="@drawable/food_review"
+        android:title="review" />
     <item
         android:id="@+id/userList"
-        android:icon="@drawable/ic_group_black_24dp"
-        android:title="사용자 목록" />
+        android:icon="@drawable/map"
+        android:title="foodMap" />
 </menu>
