@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +31,6 @@ import com.example.sns_project.activity.WritePostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-
 import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -37,6 +39,8 @@ import net.daum.mf.map.api.MapView;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -65,7 +69,7 @@ public class FoodMap extends AppCompatActivity  {
     private MarkerClickListener markerClickListener = new MarkerClickListener();
     private CustomBalloonAdapter customBalloonAdapter;
     private ArrayList<FoodData> foodDataList = new ArrayList<>();
-    private String foodCategory, placeName;
+    private String foodCategory, placeName, placeUrl;
     private MapPOIItem[] markerList = new MapPOIItem[]{};
 
 
@@ -86,7 +90,7 @@ public class FoodMap extends AppCompatActivity  {
 
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         //GPS
-//        getGPSLocation();
+        getGPSLocation();
 
         // GPS 프로바이더 사용가능여부
         final boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -209,54 +213,54 @@ public class FoodMap extends AppCompatActivity  {
         foodDataList.clear();
         String address = edtSearch.getText().toString();
         ApiService api = retrofit.create(ApiService.class);
-//        api.getAddress(ApiService.ApiKey, address, lng, lat, 20000)
-//                .enqueue(new Callback<Data>() {
-//                    @Override
-//                    public void onResponse(Call<Data> call, Response<Data> response) {
-//                        if (response.body() != null) {
-//                            if (response.body().getMeta().getPageableCount() >= 15) {
-//                                response.body().getMeta().setPageableCount(15);
-//                            }
-//                            Log.d("메인", response.body().toString());
-//                            for (int i = 0; i < response.body().getMeta().getPageableCount(); i++) {
-//                                Log.d("메인", "카운트" + response.body().getMeta().getPageableCount());
-//                                kakao.setValue(response.body());
-//                                dataArrayList.add(response.body());
-////                                Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
-//                            }
-//                            for (int i = 0; i < dataArrayList.size() - 1; i++) {
-//                                String[] colum = {
-//                                        dataArrayList.get(i).getDocuments().get(i).getPlaceName(),
-//                                        dataArrayList.get(i).getDocuments().get(i).getCategoryName(),
-//                                        dataArrayList.get(i).getDocuments().get(i).getRoadAddressName(),
-//                                        dataArrayList.get(i).getDocuments().get(i).getPhone(),
-//                                        dataArrayList.get(i).getDocuments().get(i).getX(),
-//                                        dataArrayList.get(i).getDocuments().get(i).getY(),
-//                                        dataArrayList.get(i).getDocuments().get(i).getPlaceUrl()
-//                                };
-//                                FoodData foodData = new FoodData(
-//                                        colum[0], colum[1], colum[2], colum[3], colum[4], colum[5], colum[6]
-//                                );
-//                                foodDataList.add(foodData);
-//                            }
-//                            Log.d("메인", " " + foodDataList.size());
-//                            placeMarker();
-//                        } else {
-//                            Log.i("메인", "리스폰스 널" + response.code());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<Data> call, Throwable t) {
-//                        Log.d("kakao", "실패");
-//                    }
-//                });
+        api.getAddress(ApiService.ApiKey, address, String.valueOf(lng), String.valueOf(lat), 20000)
+                .enqueue(new Callback<Data>() {
+                    @Override
+                    public void onResponse(Call<Data> call, Response<Data> response) {
+                        if (response.body() != null) {
+                            if (response.body().getMeta().getPageableCount() >= 15) {
+                                response.body().getMeta().setPageableCount(15);
+                            }
+                            Log.d("메인", response.body().toString());
+                            for (int i = 0; i < response.body().getMeta().getPageableCount(); i++) {
+                                Log.d("메인", "카운트" + response.body().getMeta().getPageableCount());
+                                kakao.setValue(response.body());
+                                dataArrayList.add(response.body());
+//                                Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
+                            }
+                            for (int i = 0; i < dataArrayList.size() - 1; i++) {
+                                String[] colum = {
+                                        dataArrayList.get(i).getDocuments().get(i).getPlaceName(),
+                                        dataArrayList.get(i).getDocuments().get(i).getCategoryName(),
+                                        dataArrayList.get(i).getDocuments().get(i).getRoadAddressName(),
+                                        dataArrayList.get(i).getDocuments().get(i).getPhone(),
+                                        dataArrayList.get(i).getDocuments().get(i).getX(),
+                                        dataArrayList.get(i).getDocuments().get(i).getY(),
+                                        dataArrayList.get(i).getDocuments().get(i).getPlaceUrl()
+                                };
+                                FoodData foodData = new FoodData(
+                                        colum[0], colum[1], colum[2], colum[3], colum[4], colum[5], colum[6]
+                                );
+                                foodDataList.add(foodData);
+                            }
+                            Log.d("메인", " " + foodDataList.size());
+                            placeMarker();
+                        } else {
+                            Log.i("메인", "리스폰스 널" + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Data> call, Throwable t) {
+                        Log.d("kakao", "실패");
+                    }
+                });
     }
 
 
     private interface ApiService {
         String baseUrl = "https://dapi.kakao.com/";
-        //        String ApiKey = BuildConfig.KAKAO_API_KEY;
+//        String ApiKey = BuildConfig.KAKAO_API_KEY;
         String ApiKey = "KakaoAK 105421c1ffe84bf639305ce045c11e92";
 
         @GET("v2/local/search/keyword.json?page=1&size=15&sort=distance")
@@ -267,12 +271,10 @@ public class FoodMap extends AppCompatActivity  {
                               @Query("radius") Integer rad);
     }
 
-    class CustomBalloonAdapter implements CalloutBalloonAdapter {
-        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);
-        ;
+    class CustomBalloonAdapter implements CalloutBalloonAdapter{
+        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);;
         TextView tvName = mCalloutBalloon.findViewById(R.id.ball_tv_name);
         TextView tvAddress = mCalloutBalloon.findViewById(R.id.ball_tv_address);
-
         public CustomBalloonAdapter() {
 
         }
@@ -292,7 +294,7 @@ public class FoodMap extends AppCompatActivity  {
 
     }
 
-    class MarkerClickListener implements MapView.POIItemEventListener {
+    class MarkerClickListener implements MapView.POIItemEventListener{
 
         @Override
         public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
@@ -307,24 +309,29 @@ public class FoodMap extends AppCompatActivity  {
         @Override
         public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
             alertDialog = View.inflate(FoodMap.this, R.layout.dialog_map, null);
-            tvName = alertDialog.findViewById(R.id.tv_name);
             tvAddress = alertDialog.findViewById(R.id.tv_address);
             tvPhone = alertDialog.findViewById(R.id.tv_phone);
             tvUrl = alertDialog.findViewById(R.id.tv_url);
 
-            tvName.setText(foodDataList.get(mapPOIItem.getTag()).getName());
             tvAddress.setText(foodDataList.get(mapPOIItem.getTag()).getCategoryName());
             tvPhone.setText(foodDataList.get(mapPOIItem.getTag()).getRoadAddressName());
-            tvUrl.setText(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
+
+            SpannableString content = new SpannableString(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            tvUrl.setText(content);
+
+//            tvUrl.setText(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
             tvUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tvUrl.getText().toString()));
+                    startActivity(intent);
                 }
             });
 
-            placeName = tvName.getText().toString();
+            placeName = foodDataList.get(mapPOIItem.getTag()).getName();
             foodCategory = tvAddress.getText().toString();
+            placeUrl = tvUrl.getText().toString();
 
             new AlertDialog.Builder(FoodMap.this)
                     .setTitle(foodDataList.get(mapPOIItem.getTag()).getName())
@@ -370,6 +377,7 @@ public class FoodMap extends AppCompatActivity  {
         intent.putExtra("collectionPath", COLLECTION_PATH);
         intent.putExtra("placeName", placeName);
         intent.putExtra("foodCategory", foodCategory);
+        intent.putExtra("placeUrl", placeUrl);
         startActivityForResult(intent, 0);
     }
 }

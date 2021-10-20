@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
+import com.example.sns_project.UserInfo;
 import com.example.sns_project.activity.WritePostActivity;
 import com.example.sns_project.adapter.HomeAdapter;
 import com.example.sns_project.foodmap.FoodMap;
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private HomeAdapter homeAdapter;
     private ArrayList<PostInfo> postList;
+    private ArrayList<UserInfo> userList;
     private boolean updating;
     private boolean topScrolled;
 
@@ -61,7 +63,8 @@ public class HomeFragment extends Fragment {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         postList = new ArrayList<>();
-        homeAdapter = new HomeAdapter(getActivity(), postList);
+        userList = new ArrayList<>();
+        homeAdapter = new HomeAdapter(getActivity(), postList, userList);
         homeAdapter.setOnPostListener(onPostListener);
 
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
@@ -169,6 +172,7 @@ public class HomeFragment extends Fragment {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 postList.add(new PostInfo(COLLECTION_PATH,
                                         document.getData().get("placeName").toString(),
+                                        document.getData().get("placeUrl").toString(),
                                         document.getData().get("foodCategory").toString(),
                                         document.getData().get("title").toString(),
                                         (ArrayList<String>) document.getData().get("contents"),
@@ -177,13 +181,37 @@ public class HomeFragment extends Fragment {
                                         new Date(document.getDate("createdAt").getTime()),
                                         document.getId()));
                             }
-                            homeAdapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
+                        inputUserInfo();
                         updating = false;
                     }
                 });
+    }
+
+    private void inputUserInfo() {
+        CollectionReference collectionReference = firebaseFirestore.collection("users");
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d("가져오기", "리스너");
+                if(task.isSuccessful()){
+                    Log.d("가져오기", "이프문");
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        userList.add(new UserInfo(
+                                document.getId(),
+                                document.getData().get("name").toString(),
+                                document.getData().get("phoneNumber").toString(),
+                                document.getData().get("birthDay").toString(),
+                                document.getData().get("address").toString(),
+                                document.getString("photoUrl")));
+                    }
+                    homeAdapter.notifyDataSetChanged();
+                    Log.d("가져오기", "끝");
+                }
+            }
+        });
     }
 
     private void myStartActivity(Class c) {

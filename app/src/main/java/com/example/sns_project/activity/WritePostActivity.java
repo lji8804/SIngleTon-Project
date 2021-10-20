@@ -44,7 +44,7 @@ import static com.example.sns_project.Util.storageUrlToName;
 
 public class WritePostActivity extends BasicActivity {
     private static final String TAG = "WritePostActivity";
-    private String collectionPath, placeName, foodCategory;
+    private String collectionPath, placeName, foodCategory, placeUrl;
     private FirebaseUser user;
     private StorageReference storageRef;
     private ArrayList<String> pathList = new ArrayList<>();
@@ -98,6 +98,7 @@ public class WritePostActivity extends BasicActivity {
         collectionPath = getIntent().getStringExtra("collectionPath");
         placeName = getIntent().getStringExtra("placeName");
         foodCategory = getIntent().getStringExtra("foodCategory");
+        placeUrl = getIntent().getStringExtra("placeUrl");
         tvPlaceName.setText(placeName);
         tvFoodCategory.setText(foodCategory);
         postInit();
@@ -223,7 +224,6 @@ public class WritePostActivity extends BasicActivity {
             StorageReference storageRef = storage.getReference();
             FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-
             final DocumentReference documentReference = postInfo == null ? firebaseFirestore.collection(collectionPath).document() : firebaseFirestore.collection(collectionPath).document(postInfo.getId());
             final Date date = postInfo == null ? new Date() : postInfo.getCreatedAt();
 
@@ -268,7 +268,7 @@ public class WritePostActivity extends BasicActivity {
                                             successCount--;
                                             contentsList.set(index, uri.toString());
                                             if (successCount == 0) {
-                                                PostInfo postInfo = new PostInfo(collectionPath, placeName, foodCategory, title, contentsList, formatList, user.getUid(), date);
+                                                PostInfo postInfo = new PostInfo(collectionPath, placeName, placeUrl, foodCategory, title, contentsList, formatList, user.getUid(), date);
                                                 storeUpload(documentReference, postInfo);
                                             }
                                         }
@@ -283,7 +283,7 @@ public class WritePostActivity extends BasicActivity {
                 }
             }
             if (successCount == 0) {
-                storeUpload(documentReference, new PostInfo(collectionPath, placeName, foodCategory, title, contentsList, formatList, user.getUid(), date));
+                storeUpload(documentReference, new PostInfo(collectionPath, placeName, placeUrl, foodCategory, title, contentsList, formatList, user.getUid(), date));
             }
         } else {
             showToast(WritePostActivity.this, "제목을 입력해주세요.");
