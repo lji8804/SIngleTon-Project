@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -309,23 +312,27 @@ public class FoodMap extends AppCompatActivity  {
         @Override
         public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
             alertDialog = View.inflate(FoodMap.this, R.layout.dialog_map, null);
-            tvName = alertDialog.findViewById(R.id.tv_name);
             tvAddress = alertDialog.findViewById(R.id.tv_address);
             tvPhone = alertDialog.findViewById(R.id.tv_phone);
             tvUrl = alertDialog.findViewById(R.id.tv_url);
 
-            tvName.setText(foodDataList.get(mapPOIItem.getTag()).getName());
             tvAddress.setText(foodDataList.get(mapPOIItem.getTag()).getCategoryName());
             tvPhone.setText(foodDataList.get(mapPOIItem.getTag()).getRoadAddressName());
-            tvUrl.setText(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
+
+            SpannableString content = new SpannableString(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            tvUrl.setText(content);
+
+//            tvUrl.setText(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
             tvUrl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tvUrl.getText().toString()));
+                    startActivity(intent);
                 }
             });
 
-            placeName = tvName.getText().toString();
+            placeName = foodDataList.get(mapPOIItem.getTag()).getName();
             foodCategory = tvAddress.getText().toString();
             placeUrl = tvUrl.getText().toString();
 
