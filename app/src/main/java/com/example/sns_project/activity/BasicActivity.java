@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
+import com.example.sns_project.fragment.ReviewFragment;
+import com.example.sns_project.fragment.UserInfoFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,8 +54,10 @@ public class BasicActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         switch (item.getItemId()){
             case R.id.user_Info:
-                Intent intent = new Intent(this, MemberInitActivity.class);
-                startActivity(intent);
+                UserInfoFragment userInfoFragment = new UserInfoFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, userInfoFragment)
+                        .commit();
 
                 break;
             case R.id.user_Logout:
