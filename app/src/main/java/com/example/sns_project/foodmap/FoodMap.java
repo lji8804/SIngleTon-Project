@@ -28,7 +28,6 @@ import com.example.sns_project.activity.WritePostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-
 import net.daum.mf.map.api.CalloutBalloonAdapter;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -258,7 +257,7 @@ public class FoodMap extends AppCompatActivity  {
 
     private interface ApiService {
         String baseUrl = "https://dapi.kakao.com/";
-        //        String ApiKey = BuildConfig.KAKAO_API_KEY;
+//        String ApiKey = BuildConfig.KAKAO_API_KEY;
         String ApiKey = "KakaoAK 105421c1ffe84bf639305ce045c11e92";
 
         @GET("v2/local/search/keyword.json?page=1&size=15&sort=distance")
@@ -269,12 +268,10 @@ public class FoodMap extends AppCompatActivity  {
                               @Query("radius") Integer rad);
     }
 
-    class CustomBalloonAdapter implements CalloutBalloonAdapter {
-        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);
-        ;
+    class CustomBalloonAdapter implements CalloutBalloonAdapter{
+        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);;
         TextView tvName = mCalloutBalloon.findViewById(R.id.ball_tv_name);
         TextView tvAddress = mCalloutBalloon.findViewById(R.id.ball_tv_address);
-
         public CustomBalloonAdapter() {
 
         }
@@ -294,7 +291,7 @@ public class FoodMap extends AppCompatActivity  {
 
     }
 
-    class MarkerClickListener implements MapView.POIItemEventListener {
+    class MarkerClickListener implements MapView.POIItemEventListener{
 
         @Override
         public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
