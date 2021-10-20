@@ -73,6 +73,13 @@
                     android:layout_margin="5dp"
                     android:textSize="18dp" />
 
+                <Button
+                    android:id="@+id/btn_update_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="정보 수정"/>
+
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

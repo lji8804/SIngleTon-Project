@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,6 +58,15 @@ public class UserInfoFragment extends Fragment {
         final TextView phoneNumberTextView = view.findViewById(R.id.phoneNumberTextView);
         final TextView birthDayTextView = view.findViewById(R.id.birthDayTextView);
         final TextView addressTextView = view.findViewById(R.id.addressTextView);
+        Button btnUpdateProfile = view.findViewById(R.id.btn_update_profile);
+
+        btnUpdateProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), MemberInitActivity.class);
+                startActivity(intent);
+            }
+        });
 
         DocumentReference documentReference = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
