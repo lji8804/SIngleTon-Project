@@ -12,20 +12,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.sns_project.KakaoLocal.Data;
-import com.example.sns_project.PostInfo;
 import com.example.sns_project.R;
 import com.example.sns_project.activity.WritePostActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,31 +37,39 @@ import net.daum.mf.map.api.MapView;
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
-public class FoodMap extends AppCompatActivity {
-    private double lat;
-    private double lng;
-    private ImageButton ibBtnSearch,ibBtnLocation;
+
+
+public class FoodMap extends AppCompatActivity  {
+    private final String COLLECTION_PATH = "posts";
+    // activity
+    private ImageButton ibBtnSearch, ibBtnLocation;
+    private double lat, lng;
     private EditText edtSearch;
-    private double pressedTime;
+    private MapView mapView;
+
+    //GPS
+    private boolean isGPS;
+    private LocationManager lm;
+    private long pressedTime = 0;
+
+    // dialog
     private View alertDialog;
     private TextView tvName, tvAddress, tvPhone, tvUrl;
-    private ArrayList<FoodData> foodDataList = new ArrayList<>();
-    private LocationManager lm;
-    private MapView mapView;
-    private FusedLocationProviderClient fusedLocationClient;
-    private boolean isGPS ;
+
     private MarkerClickListener markerClickListener = new MarkerClickListener();
     private CustomBalloonAdapter customBalloonAdapter;
-    private final String COLLECTION_PATH = "posts";
+    private ArrayList<FoodData> foodDataList = new ArrayList<>();
     private String foodCategory, placeName;
+    private MapPOIItem[] markerList = new MapPOIItem[]{};
+
+
+    private Location lastKnownLocation = null;
 
     MutableLiveData<Data> kakao = new MutableLiveData<>();
     ArrayList<Data> dataArrayList = new ArrayList<>();
@@ -81,26 +86,18 @@ public class FoodMap extends AppCompatActivity {
 
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         //GPS
-        getGPSLocation();
+//        getGPSLocation();
 
         // GPS 프로바이더 사용가능여부
         final boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         // 네트워크 프로바이더 사용가능여부
         final boolean isNetworkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-        // 수동으로 위치 구하기
-//        getCurrentLocation();
-        
         //초기화면설정
         init();
 
         //리스너설정
         onClickListener();
-
-//        String url = "kakaomap://search?q=맛집&p=" + lm;
-//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//        Log.d("인텐트",intent.toString());
-//        startActivity(intent);
     }
 
     private void onClickListener() {
@@ -144,7 +141,7 @@ public class FoodMap extends AppCompatActivity {
 
 
     private void getGPSLocation() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
                             Manifest.permission.INTERNET,
@@ -160,7 +157,7 @@ public class FoodMap extends AppCompatActivity {
                         if (location != null) {
                             lat = location.getLatitude();
                             lng = location.getLongitude();
-                            Log.d("getGPSLocation", "생성 lat= "+lat + ", lng = "+ lng);
+                            Log.d("getGPSLocation", "생성 lat= " + lat + ", lng = " + lng);
                         }
                     }
                 });
@@ -178,7 +175,7 @@ public class FoodMap extends AppCompatActivity {
             double y = Double.parseDouble(foodDataList.get(i).getLongitude());
             mapPOIItem.setItemName(foodDataList.get(i).getName());
             mapPOIItem.setTag(i);
-            mapPOIItem.setMapPoint(MapPoint.mapPointWithGeoCoord( x, y ));
+            mapPOIItem.setMapPoint(MapPoint.mapPointWithGeoCoord(x, y));
             mapPOIItem.setShowCalloutBalloonOnTouch(true);
             mapPOIItem.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
             mapPOIItem.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
@@ -186,8 +183,7 @@ public class FoodMap extends AppCompatActivity {
         }
         mapView.addPOIItems(marker);
     }
-    
-    
+
 
     private void getCurrentLocation() {
         String locationProvider = LocationManager.GPS_PROVIDER;
@@ -213,60 +209,54 @@ public class FoodMap extends AppCompatActivity {
         foodDataList.clear();
         String address = edtSearch.getText().toString();
         ApiService api = retrofit.create(ApiService.class);
-        api.getAddress(ApiService.ApiKey, "%" + address + "%", String.valueOf(lng), String.valueOf(lat), 2000)
-                .enqueue(new Callback<Data>() {
-                    @Override
-                    public void onResponse(Call<Data> call, Response<Data> response) {
-                        if (response.body() != null) {
-                            if(response.body().getMeta().getPageableCount() >= 15){
-                                response.body().getMeta().setPageableCount(15);
-                            }
-                            Log.d("메인", response.body().toString());
-                            for (int i = 0; i < response.body().getMeta().getPageableCount(); i++) {
-                                Log.d("메인", "카운트" + response.body().getMeta().getPageableCount());
-                                kakao.setValue(response.body());
-                                dataArrayList.add(response.body());
-//                                Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
-                            }
-                            for (int i = 0; i < dataArrayList.size()-1; i++) {
-                                String[] colum = {
-                                        dataArrayList.get(i).getDocuments().get(i).getPlaceName(),
-                                        dataArrayList.get(i).getDocuments().get(i).getCategoryName(),
-                                        dataArrayList.get(i).getDocuments().get(i).getRoadAddressName(),
-                                        dataArrayList.get(i).getDocuments().get(i).getPhone(),
-                                        dataArrayList.get(i).getDocuments().get(i).getX(),
-                                        dataArrayList.get(i).getDocuments().get(i).getY(),
-                                        dataArrayList.get(i).getDocuments().get(i).getPlaceUrl()
-                                };
-                                FoodData foodData = new FoodData(
-                                        colum[0],colum[1],colum[2],colum[3],colum[4],colum[5],colum[6]
-                                );
-                                foodDataList.add(foodData);
-                            }
-                            Log.d("메인", " " + foodDataList.size());
-                            placeMarker();
-                        } else {
-                            Log.i("메인", "리스폰스 널" + response.code());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Data> call, Throwable t) {
-                        Log.d("kakao", "실패");
-                    }
-                });
-
-//        kakao.observe(this, new Observer<Data>() {
-//            @Override
-//            public void onChanged(Data data) {
-////               Log.i("메인", data.documentsList.get(0).getAddress_name());
-//            }
-//        });
+//        api.getAddress(ApiService.ApiKey, address, lng, lat, 20000)
+//                .enqueue(new Callback<Data>() {
+//                    @Override
+//                    public void onResponse(Call<Data> call, Response<Data> response) {
+//                        if (response.body() != null) {
+//                            if (response.body().getMeta().getPageableCount() >= 15) {
+//                                response.body().getMeta().setPageableCount(15);
+//                            }
+//                            Log.d("메인", response.body().toString());
+//                            for (int i = 0; i < response.body().getMeta().getPageableCount(); i++) {
+//                                Log.d("메인", "카운트" + response.body().getMeta().getPageableCount());
+//                                kakao.setValue(response.body());
+//                                dataArrayList.add(response.body());
+////                                Log.i("메인", dataArrayList.get(i).getDocuments().get(i).getPlaceName());
+//                            }
+//                            for (int i = 0; i < dataArrayList.size() - 1; i++) {
+//                                String[] colum = {
+//                                        dataArrayList.get(i).getDocuments().get(i).getPlaceName(),
+//                                        dataArrayList.get(i).getDocuments().get(i).getCategoryName(),
+//                                        dataArrayList.get(i).getDocuments().get(i).getRoadAddressName(),
+//                                        dataArrayList.get(i).getDocuments().get(i).getPhone(),
+//                                        dataArrayList.get(i).getDocuments().get(i).getX(),
+//                                        dataArrayList.get(i).getDocuments().get(i).getY(),
+//                                        dataArrayList.get(i).getDocuments().get(i).getPlaceUrl()
+//                                };
+//                                FoodData foodData = new FoodData(
+//                                        colum[0], colum[1], colum[2], colum[3], colum[4], colum[5], colum[6]
+//                                );
+//                                foodDataList.add(foodData);
+//                            }
+//                            Log.d("메인", " " + foodDataList.size());
+//                            placeMarker();
+//                        } else {
+//                            Log.i("메인", "리스폰스 널" + response.code());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<Data> call, Throwable t) {
+//                        Log.d("kakao", "실패");
+//                    }
+//                });
     }
 
 
     private interface ApiService {
         String baseUrl = "https://dapi.kakao.com/";
+        //        String ApiKey = BuildConfig.KAKAO_API_KEY;
         String ApiKey = "KakaoAK 105421c1ffe84bf639305ce045c11e92";
 
         @GET("v2/local/search/keyword.json?page=1&size=15&sort=distance")
@@ -277,10 +267,12 @@ public class FoodMap extends AppCompatActivity {
                               @Query("radius") Integer rad);
     }
 
-    class CustomBalloonAdapter implements CalloutBalloonAdapter{
-        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);;
+    class CustomBalloonAdapter implements CalloutBalloonAdapter {
+        private View mCalloutBalloon = getLayoutInflater().inflate(R.layout.ballon, null);
+        ;
         TextView tvName = mCalloutBalloon.findViewById(R.id.ball_tv_name);
         TextView tvAddress = mCalloutBalloon.findViewById(R.id.ball_tv_address);
+
         public CustomBalloonAdapter() {
 
         }
@@ -300,7 +292,7 @@ public class FoodMap extends AppCompatActivity {
 
     }
 
-    class MarkerClickListener implements MapView.POIItemEventListener{
+    class MarkerClickListener implements MapView.POIItemEventListener {
 
         @Override
         public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
@@ -324,6 +316,12 @@ public class FoodMap extends AppCompatActivity {
             tvAddress.setText(foodDataList.get(mapPOIItem.getTag()).getCategoryName());
             tvPhone.setText(foodDataList.get(mapPOIItem.getTag()).getRoadAddressName());
             tvUrl.setText(foodDataList.get(mapPOIItem.getTag()).getPlaceUrl());
+            tvUrl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
 
             placeName = tvName.getText().toString();
             foodCategory = tvAddress.getText().toString();

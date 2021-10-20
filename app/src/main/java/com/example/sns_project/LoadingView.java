@@ -16,11 +16,9 @@ public class LoadingView extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_view);
-
         startLoading();
-
-
     }
+
     private void startLoading() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
