@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:background="@drawable/gradient4">
+        android:background="@drawable/gradient3">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,9 +46,10 @@
                     <ImageView
                         android:id="@+id/profileImageView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:adjustViewBounds="true"
-                        android:src="@android:drawable/sym_def_app_icon" />
+                        android:src="@drawable/user" />
                 </androidx.cardview.widget.CardView>
 
                 <EditText
@@ -85,10 +86,18 @@
 
                 <Button
                     android:id="@+id/checkButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="확인"
-                    android:textStyle="bold"/>
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:text="확인"/>
 
             </LinearLayout>
         </LinearLayout>
