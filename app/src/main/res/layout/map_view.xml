@@ -14,8 +14,16 @@
 
         <ImageButton
             android:id="@+id/ibBtnLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_shape"
+            android:layout_gravity="center"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:textColor="#000000"
+            android:textSize="16sp"
             android:src="@drawable/ic_baseline_my_location_24" />
 
         <EditText
@@ -27,9 +35,16 @@
 
         <ImageButton
             android:id="@+id/ibBtnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_shape"
+            android:layout_gravity="center"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:textColor="#000000"
+            android:textSize="16sp"
             android:src="@drawable/ic_baseline_search_24" />
 
     </LinearLayout>

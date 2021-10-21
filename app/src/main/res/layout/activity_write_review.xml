@@ -52,27 +52,52 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
                     android:text="이미지" />
 
                 <Button
                     android:id="@+id/video"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
                     android:text="비디오" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/check"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_shape"
+                android:layout_gravity="center"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:layout_marginBottom="10dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
                 android:text="확인" />
 
         </LinearLayout>
@@ -102,20 +127,47 @@
 
                 <Button
                     android:id="@+id/imageModify"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
                     android:text="이미지 수정" />
 
                 <Button
                     android:id="@+id/videoModify"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
                     android:text="비디오 수정" />
 
                 <Button
                     android:id="@+id/delete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
                     android:text="삭제" />
             </LinearLayout>
 

@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient4">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,10 +38,11 @@
 
                     <ImageView
                         android:id="@+id/profileImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="170dp"
+                        android:layout_height="170dp"
+                        android:layout_gravity="center"
                         android:adjustViewBounds="true"
-                        android:src="@android:drawable/sym_def_app_icon" />
+                        android:src="@drawable/user" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -75,8 +75,17 @@
 
                 <Button
                     android:id="@+id/btn_update_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
                     android:text="정보 수정"/>
 
 

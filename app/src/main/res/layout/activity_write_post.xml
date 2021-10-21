@@ -25,6 +25,7 @@
                 android:id="@+id/tv_food_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="카테고리 들어갈 자리"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
@@ -33,6 +34,7 @@
                 android:id="@+id/tv_place_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="음식점 이름"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
@@ -43,12 +45,14 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="제목"
+                android:layout_marginBottom="10dp"
                 android:inputType="textPersonName" />
 
             <LinearLayout
                 android:id="@+id/contentsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -68,31 +72,53 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/video"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="비디오"
-                    android:textStyle="bold"/>
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:text="비디오" />
             </LinearLayout>
 
 
             <Button
                 android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="이미지"
-                android:textStyle="bold"/>
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_shape"
+                android:layout_gravity="center"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:layout_marginBottom="10dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:text="이미지"/>
             <Button
                 android:id="@+id/check"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="확인"
-                android:textStyle="bold" />
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_shape"
+                android:layout_gravity="center"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:layout_marginBottom="10dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:text="확인"/>
 
         </LinearLayout>
 
@@ -123,24 +149,48 @@
 
                 <Button
                     android:id="@+id/imageModify"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="이미지 수정"
-                    android:textStyle="bold"/>
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:text="이미지 수정" />
 
                 <Button
                     android:id="@+id/videoModify"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="비디오 수정"
-                    android:textStyle="bold"/>
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:text="비디오 수정"/>
 
                 <Button
                     android:id="@+id/delete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="삭제"
-                    android:textStyle="bold"/>
+                    android:layout_width="140dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_shape"
+                    android:layout_gravity="center"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:text="삭제"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

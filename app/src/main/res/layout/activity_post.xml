@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient4">
+    android:layout_height="match_parent">
 
     <include
         layout="@layout/view_toolbar"
@@ -17,22 +16,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/gradient3"
             android:orientation="vertical"
-            android:padding="10dp"
-            android:background="@drawable/gradient4">
+            android:layout_margin="10dp">
 
             <com.example.sns_project.view.ReadContentsVIew
                 android:id="@+id/readContentsView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.example.sns_project.view.ReadContentsVIew>
+                android:layout_height="wrap_content"></com.example.sns_project.view.ReadContentsVIew>
 
             <Button
                 android:id="@+id/btn_kakaoplace"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_shape"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
                 android:text="더 많은 정보"
-                android:textStyle="bold"/>
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
 
