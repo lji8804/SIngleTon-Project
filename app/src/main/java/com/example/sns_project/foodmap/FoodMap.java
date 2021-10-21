@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.sns_project.BuildConfig;
 import com.example.sns_project.KakaoLocal.Data;
 import com.example.sns_project.R;
 import com.example.sns_project.activity.WritePostActivity;
@@ -188,18 +189,6 @@ public class FoodMap extends AppCompatActivity  {
         mapView.addPOIItems(marker);
     }
 
-
-    private void getCurrentLocation() {
-        String locationProvider = LocationManager.GPS_PROVIDER;
-        @SuppressLint("MissingPermission")
-        Location lastKnownLocation = lm.getLastKnownLocation(locationProvider);
-        if (lastKnownLocation != null) {
-            lng = lastKnownLocation.getLongitude();
-            lat = lastKnownLocation.getLatitude();
-            Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
-        }
-    }
-
     private void getFoodData() {
 
         Log.d("액티비티", "생성");
@@ -260,8 +249,7 @@ public class FoodMap extends AppCompatActivity  {
 
     private interface ApiService {
         String baseUrl = "https://dapi.kakao.com/";
-//        String ApiKey = BuildConfig.KAKAO_API_KEY;
-        String ApiKey = "KakaoAK 105421c1ffe84bf639305ce045c11e92";
+        String ApiKey = BuildConfig.KAKAO_API_KEY;
 
         @GET("v2/local/search/keyword.json?page=1&size=15&sort=distance")
         Call<Data> getAddress(@Header("Authorization") String key,
