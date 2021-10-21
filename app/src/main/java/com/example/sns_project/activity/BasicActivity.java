@@ -78,7 +78,6 @@ public class BasicActivity extends AppCompatActivity {
                     }
                 });
         }
-
         return true;
     }
 }

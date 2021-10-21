@@ -100,13 +100,13 @@ public class MainActivity extends BasicActivity {
                                     .replace(R.id.container, homeFragment)
                                     .commit();
                             return true;
-                        case R.id.myInfo:
+                        case R.id.review:
                             ReviewFragment reviewFragment = new ReviewFragment();
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.container, reviewFragment)
                                     .commit();
                             return true;
-                        case R.id.userList:
+                        case R.id.foodmap:
 
                             Intent intent = new Intent(MainActivity.this, FoodMap.class);
                             startActivity(intent);
