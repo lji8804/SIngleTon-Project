@@ -27,14 +27,19 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
     private FirebaseHelper firebaseHelper;
     private ArrayList<ArrayList<SimpleExoPlayer>> playerArrayListArrayList = new ArrayList<>();
     private final int MORE_INDEX = 2;
-    private ImageView ivProfile;
-    TextView tvTitle, tvID, tvGotoURL;
+
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
+        private ImageView ivProfile;
+        private TextView tvTitle, tvID, tvGotoURL;
         CardView cardView;
         MainViewHolder(CardView v) {
             super(v);
             cardView = v;
+            ivProfile = cardView.findViewById(R.id.iv_profile);
+            tvTitle = cardView.findViewById(R.id.tv_title);
+            tvID = cardView.findViewById(R.id.tv_id);
+            tvGotoURL = cardView.findViewById(R.id.tv_gotoURL);
         }
     }
 
@@ -74,19 +79,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MainViewHo
     @Override
     public void onBindViewHolder(@NonNull final MainViewHolder holder, int position) {
         CardView cardView = holder.cardView;
-        ivProfile = cardView.findViewById(R.id.iv_profile);
-        tvTitle = cardView.findViewById(R.id.tv_title);
-        tvID = cardView.findViewById(R.id.tv_id);
-        tvGotoURL = cardView.findViewById(R.id.tv_gotoURL);
 
         PostInfo postInfo = mDataset.get(position);
-        tvTitle.setText(postInfo.getTitle());
-        tvGotoURL.setText(postInfo.getPlaceName());
+        holder.tvTitle.setText(postInfo.getTitle());
+        holder.tvGotoURL.setText(postInfo.getPlaceName());
 
         for (UserInfo userInfo: userDataset) {
             if(postInfo.getPublisher().equals(userInfo.getUid())){
-                tvID.setText(userInfo.getName());
-                Glide.with(ivProfile.getContext()).load(userInfo.getPhotoUrl()).circleCrop().into(ivProfile);
+                holder.tvID.setText(userInfo.getName());
+                Glide.with(holder.ivProfile.getContext()).load(userInfo.getPhotoUrl()).circleCrop().into(holder.ivProfile);
             }
         }
     }
